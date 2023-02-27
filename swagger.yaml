@@ -1058,6 +1058,17 @@ paths:
     get:
       summary: get verified smart contracts
       operationId: get_smart_contracts
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+            example: "proxy"
+        - in: query
+          name: filter
+          schema:
+            type: string
+            example: "vyper | solidity"
       responses:
         "200":
           description: smart contract
