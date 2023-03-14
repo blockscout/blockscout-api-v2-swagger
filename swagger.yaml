@@ -1090,6 +1090,38 @@ paths:
         "400":
           description: bad input parameter
 
+  /smart-contracts/counters:
+    get:
+      summary: get verified smart contracts counters
+      operationId: get_smart_contracts_counters
+      responses:
+        "200":
+          description: smart contracts counters
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - new_smart_contracts_24h
+                  - new_verified_smart_contracts_24h
+                  - smart_contracts
+                  - verified_smart_contracts
+                properties:
+                  new_smart_contracts_24h:
+                    type: string
+                    example: "12"
+                  new_verified_smart_contracts_24h:
+                    type: string
+                    example: "11"
+                  smart_contracts:
+                    type: string
+                    example: "20"
+                  verified_smart_contracts:
+                    type: string
+                    example: "15"
+        "400":
+          description: bad input parameter
+
   /smart-contracts/{address_hash}:
     get:
       summary: get smart contract
