@@ -1024,7 +1024,39 @@ paths:
                       {
                         "block_number": 27736955,
                         "index": 61,
-                        "items_count": 2,
+                        "items_count": 50,
+                      }
+        "400":
+          description: bad input parameter
+
+  /tokens/{address_hash}/instances/{id}/holders:
+    get:
+      summary: get token instance holders
+      operationId: get_token_instance_holders
+      parameters:
+        - $ref: "#/components/parameters/addressHash"
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: token
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Holder"
+                  next_page_params:
+                    type: object
+                    example:
+                      {
+                        "value": 789999999999999970440,
+                        "address_hash": "0x3e9ac8f16c92bc4f093357933b5befbf1e16987b",
                       }
         "400":
           description: bad input parameter
