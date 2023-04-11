@@ -876,7 +876,7 @@ paths:
         "400":
           description: bad input parameter
 
-  /tokens/{address_hash}/token-transfers:
+  /tokens/{address_hash}/transfers:
     get:
       summary: get token token transfers
       operationId: get_token_token_transfers
