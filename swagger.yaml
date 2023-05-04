@@ -2052,6 +2052,8 @@ components:
         - token
         - token_id
       properties:
+        token_instance:
+          $ref: "#/components/schemas/NFTInstance"
         value:
           type: string
           example: "10000"
@@ -2244,33 +2246,6 @@ components:
           $ref: "#/components/schemas/AddressParam"
         token:
           $ref: "#/components/schemas/TokenInfo"
-
-    TokenInstance:
-      required:
-        - id
-        - token_name
-        - token_type
-        - token_address_hash
-        - transfers_count
-      properties:
-        id:
-          type: integer
-          example: 431
-        token_name:
-          type: string
-          example: "New NFT"
-        token_type:
-          type: string
-          example: "ERC-721"
-        token_address_hash:
-          type: string
-          example: "0x394c399dbA25B99Ab7708EdB505d755B3aa29997"
-        transfers_count:
-          type: integer
-          example: 10
-        media_url:
-          type: string
-          example: "example.com/picture.png"
 
     SmartContract:
       properties:
