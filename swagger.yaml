@@ -405,9 +405,22 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/StateChange"
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/StateChange"
+                  next_page_params:
+                    type: object
+                    example:
+                      {
+                        "items_count": 1,
+                        "state_changes": null
+                      }
         "400":
           description: bad input parameter
 
@@ -2687,12 +2700,15 @@ components:
         balance_after:
           type: string
           example: "100000000"
+        token_id:
+          type: string
+          example: null
         change:
           oneOf:
             - $ref: "#/components/schemas/NFTChangesArray"
-            - $ref: "#/components/schemas/ERC20OrCoinChange"
+            - $ref: "#/components/schemas/ERC20Or1155OrCoinChange"
 
-    ERC20OrCoinChange:
+    ERC20Or1155OrCoinChange:
       type: string
       example: "-10000000"
 
@@ -2710,10 +2726,7 @@ components:
           type: string
           example: "from | to"
         total:
-          oneOf:
-            - $ref: "#/components/schemas/TotalERC721"
-            - $ref: "#/components/schemas/TotalERC1155"
-            - $ref: "#/components/schemas/TotalERC1155Batch"
+          $ref: "#/components/schemas/TotalERC721"
 
     SmartContractForList:
       required:
