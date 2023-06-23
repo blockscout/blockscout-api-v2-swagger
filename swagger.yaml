@@ -472,6 +472,37 @@ paths:
         "400":
           description: bad input parameter
 
+  /blocks/{block_number_or_hash}/withdrawals:
+    get:
+      summary: get block withdrawals
+      operationId: get_block_withdrawals
+      parameters:
+        - $ref: "#/components/parameters/blockNumberOrHash"
+      responses:
+        "200":
+          description: block's withdrawals (pay attention that block_number together with timestamp fields is not included to response in this endpoint)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Withdrawal"
+                  next_page_params:
+                    type: object
+                    example:
+                      {
+                        "index": 1,
+                        "items_count": 50,
+                      }
+        "400":
+          description: bad input parameter
+
   /addresses:
     get:
       summary: get native coin holders list
@@ -829,6 +860,33 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CoinBalanceHistoryByDaysEntry"
+        "400":
+          description: bad input parameter
+
+  /addresses/{address_hash}/withdrawals:
+    get:
+      summary: get address withdrawals
+      operationId: get_address_withdrawals
+      parameters:
+        - $ref: "#/components/parameters/addressHash"
+      responses:
+        "200":
+          description: pay attention that receiver field is not included to response in this endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Withdrawal"
+                  next_page_params:
+                    type: object
+                    example: { "index": 1, "items_count": 50 }
         "400":
           description: bad input parameter
 
@@ -1341,6 +1399,33 @@ paths:
                     type: string
                     example: "https://core.poa.network"
 
+  /withdrawals:
+    get:
+      summary: get withdrawals
+      operationId: get_withdrawals
+      responses:
+        "200":
+          description: withdrawals
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Withdrawal"
+                  next_page_params:
+                    type: object
+                    example:
+                      {
+                        "index": 1,
+                        "items_count": 50,
+                      }
+
 components:
   parameters:
     addressHash:
@@ -1463,6 +1548,9 @@ components:
           example: "block | reorg | uncle"
         tx_fees:
           type: integer
+        withdrawals_count:
+          type: integer
+          example: 16 
 
     TokenTransfer:
       type: object
@@ -1989,6 +2077,8 @@ components:
           items:
             $ref: "#/components/schemas/AddressTag"
         is_verified:
+          type: boolean
+        has_beacon_chain_withdrawals:
           type: boolean
 
     AddressWithTxCount:
@@ -2762,3 +2852,28 @@ components:
         market_cap:
           type: number
           example: 1000000000.0001
+
+    Withdrawal:
+      required:
+        - "index"
+        - "amount"
+        - "validator_index"
+      properties:
+        index:
+          type: integer
+          example: 1
+        amount:
+          type: string
+          example: "1000000000000000000"
+        validator_index:
+          type: integer
+          example: 1
+        receiver:
+          $ref: "#/components/schemas/AddressParam"
+        block_number:
+          type: integer
+          example: 1
+        timestamp:
+          type: string
+          example: "2023-06-20T07:55:00.000000Z"
+
