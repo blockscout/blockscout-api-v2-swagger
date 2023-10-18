@@ -743,7 +743,7 @@ paths:
 
   /addresses/{address_hash}/token-balances:
     get:
-      summary: get blocks validated by address
+      summary: get all tokens balances for the address
       operationId: get_address_token_balances
       parameters:
         - $ref: "#/components/parameters/addressHash"
@@ -761,7 +761,7 @@ paths:
 
   /addresses/{address_hash}/tokens:
     get:
-      summary: get blocks validated by address
+      summary: token balances with filtering and pagination
       operationId: get_address_tokens
       parameters:
         - $ref: "#/components/parameters/addressHash"
