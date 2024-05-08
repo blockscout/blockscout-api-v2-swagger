@@ -1,6 +1,6 @@
-## blockscout-typescript-fetch@1.0.0
+## blockscout-typescript-fetch
 
-An OpenAPI SDK generated [typescript-fetch](https://openapi-generator.tech/docs/generators/typescript-fetch).
+An OpenAPI SDK generated with [typescript-fetch](https://openapi-generator.tech/docs/generators/typescript-fetch).
 
 ```npm install blockscout-typescript-fetch```
 
