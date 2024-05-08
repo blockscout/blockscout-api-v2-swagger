@@ -575,6 +575,35 @@ paths:
           schema:
             type: string
             example: "to | from" # it can be 'to', 'from' or empty (or absent)
+        # next_page_params
+        - in: query
+          name: block_number
+          schema:
+            type: string
+        - in: query
+          name: fee
+          schema:
+            type: string
+        - in: query
+          name: hash
+          schema:
+            type: string
+        - in: query
+          name: index
+          schema:
+            type: integer
+        - in: query
+          name: inserted_at
+          schema:
+            type: string
+        - in: query
+          name: items_count
+          schema:
+            type: integer
+        - in: query
+          name: value
+          schema:
+            type: string
       responses:
         "200":
           description: address

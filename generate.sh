@@ -1,0 +1,1 @@
+npx @openapitools/openapi-generator-cli generate --skip-validate-spec -i ../blockscout-api-v2-swagger/swagger.yaml -g typescript -o ./ --additional-properties=supportsES6=true --additional-properties=useObjectParameters=true
