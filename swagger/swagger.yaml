@@ -393,32 +393,32 @@ paths:
                   $ref: "#/components/schemas/RawTrace"
         "400":
           description: bad input parameter
-  /transactions/{transaction_hash}/state-changes:
-    get:
-      summary: get state changes
-      operationId: get_state_changes
-      parameters:
-        - $ref: "#/components/parameters/transactionHash"
-      responses:
-        "200":
-          description: state changes
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - items
-                  - next_page_params
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/StateChange"
-                  next_page_params:
-                    type: object
-                    example: { "items_count": 1, "state_changes": null }
-        "400":
-          description: bad input parameter
+  # /transactions/{transaction_hash}/state-changes:
+  #   get:
+  #     summary: get state changes
+  #     operationId: get_state_changes
+  #     parameters:
+  #       - $ref: "#/components/parameters/transactionHash"
+  #     responses:
+  #       "200":
+  #         description: state changes
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               required:
+  #                 - items
+  #                 - next_page_params
+  #               properties:
+  #                 items:
+  #                   type: array
+  #                   items:
+  #                     $ref: "#/components/schemas/StateChange"
+  #                 next_page_params:
+  #                   type: object
+  #                   example: { "items_count": 1, "state_changes": null }
+  #       "400":
+  #         description: bad input parameter
 
   /blocks/{block_number_or_hash}:
     get:
@@ -1241,145 +1241,145 @@ paths:
         "400":
           description: bad input parameter
 
-  /smart-contracts/{address_hash}/methods-read:
-    get:
-      summary: get read methods
-      operationId: get_read_methods
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-        - in: query
-          name: is_custom_abi
-          schema:
-            type: string
-            example: "true"
-        - in: query
-          name: from
-          schema:
-            type: string
-            example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
+  # /smart-contracts/{address_hash}/methods-read:
+  #   get:
+  #     summary: get read methods
+  #     operationId: get_read_methods
+  #     parameters:
+  #       - $ref: "#/components/parameters/addressHash"
+  #       - in: query
+  #         name: is_custom_abi
+  #         schema:
+  #           type: string
+  #           example: "true"
+  #       - in: query
+  #         name: from
+  #         schema:
+  #           type: string
+  #           example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
 
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/ReadMethodWithValue"
-                    - $ref: "#/components/schemas/ReadMethodWithoutValue"
+  #     responses:
+  #       "200":
+  #         description: smart contract
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 oneOf:
+  #                   - $ref: "#/components/schemas/ReadMethodWithValue"
+  #                   - $ref: "#/components/schemas/ReadMethodWithoutValue"
 
-        "400":
-          description: bad input parameter
+  #       "400":
+  #         description: bad input parameter
 
-  /smart-contracts/{address_hash}/methods-read-proxy:
-    get:
-      summary: get read methods proxy
-      operationId: get_read_methods_proxy
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-        - in: query
-          name: is_custom_abi
-          schema:
-            type: string
-            example: "true"
-        - in: query
-          name: from
-          schema:
-            type: string
-            example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/ReadMethodWithValue"
-                    - $ref: "#/components/schemas/ReadMethodWithoutValue"
+  # /smart-contracts/{address_hash}/methods-read-proxy:
+  #   get:
+  #     summary: get read methods proxy
+  #     operationId: get_read_methods_proxy
+  #     parameters:
+  #       - $ref: "#/components/parameters/addressHash"
+  #       - in: query
+  #         name: is_custom_abi
+  #         schema:
+  #           type: string
+  #           example: "true"
+  #       - in: query
+  #         name: from
+  #         schema:
+  #           type: string
+  #           example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
+  #     responses:
+  #       "200":
+  #         description: smart contract
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 oneOf:
+  #                   - $ref: "#/components/schemas/ReadMethodWithValue"
+  #                   - $ref: "#/components/schemas/ReadMethodWithoutValue"
 
-  /smart-contracts/{address_hash}/methods-write:
-    get:
-      summary: get write methods
-      operationId: get_write_methods
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-        - in: query
-          name: is_custom_abi
-          schema:
-            type: string
-            example: "true"
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/WriteMethod"
-                    # - $ref: '#/components/schemas/ReadMethodWithoutValue'
+  # /smart-contracts/{address_hash}/methods-write:
+  #   get:
+  #     summary: get write methods
+  #     operationId: get_write_methods
+  #     parameters:
+  #       - $ref: "#/components/parameters/addressHash"
+  #       - in: query
+  #         name: is_custom_abi
+  #         schema:
+  #           type: string
+  #           example: "true"
+  #     responses:
+  #       "200":
+  #         description: smart contract
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 oneOf:
+  #                   - $ref: "#/components/schemas/WriteMethod"
+  #                   # - $ref: '#/components/schemas/ReadMethodWithoutValue'
 
-        "400":
-          description: bad input parameter
+        # "400":
+        #   description: bad input parameter
 
-  /smart-contracts/{address_hash}/methods-write-proxy:
-    get:
-      summary: get write methods proxy
-      operationId: get_write_methods_proxy
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-        - in: query
-          name: is_custom_abi
-          schema:
-            type: string
-            example: "true"
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/WriteMethod"
-                    # - $ref: '#/components/schemas/ReadMethodWithoutValue'
+  # /smart-contracts/{address_hash}/methods-write-proxy:
+  #   get:
+  #     summary: get write methods proxy
+  #     operationId: get_write_methods_proxy
+  #     parameters:
+  #       - $ref: "#/components/parameters/addressHash"
+  #       - in: query
+  #         name: is_custom_abi
+  #         schema:
+  #           type: string
+  #           example: "true"
+  #     responses:
+  #       "200":
+  #         description: smart contract
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 oneOf:
+  #                   - $ref: "#/components/schemas/WriteMethod"
+  #                   # - $ref: '#/components/schemas/ReadMethodWithoutValue'
 
-        "400":
-          description: bad input parameter
+  #       "400":
+  #         description: bad input parameter
 
-  /smart-contracts/{address_hash}/query-read-method:
-    post:
-      summary: query read method
-      operationId: query_read_method
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-      requestBody:
-        # description:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ReadMethodQueryBody"
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/ReadMethodResponse"
-                    # - $ref: '#/components/schemas/ReadMethodWithoutValue'
+  # /smart-contracts/{address_hash}/query-read-method:
+  #   post:
+  #     summary: query read method
+  #     operationId: query_read_method
+  #     parameters:
+  #       - $ref: "#/components/parameters/addressHash"
+  #     requestBody:
+  #       # description:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/ReadMethodQueryBody"
+  #     responses:
+  #       "200":
+  #         description: smart contract
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 oneOf:
+  #                   - $ref: "#/components/schemas/ReadMethodResponse"
+  #                   # - $ref: '#/components/schemas/ReadMethodWithoutValue'
 
-        "400":
-          description: bad input parameter
+  #       "400":
+  #         description: bad input parameter
 
   /config/json-rpc-url:
     get:
@@ -3088,34 +3088,34 @@ components:
               - type: object
           example: [null]
 
-    StateChange:
-      required:
-        - address
-        - is_miner
-        - type
-      properties:
-        token:
-          $ref: "#/components/schemas/TokenInfo"
-        type:
-          type: string
-          example: "coin | token"
-        is_miner:
-          type: boolean
-        address:
-          $ref: "#/components/schemas/AddressParam"
-        balance_before:
-          type: string
-          example: "100000000"
-        balance_after:
-          type: string
-          example: "100000000"
-        token_id:
-          type: string
-          example: null
-        change:
-          oneOf:
-            - $ref: "#/components/schemas/NFTChangesArray"
-            - $ref: "#/components/schemas/ERC20Or1155OrCoinChange"
+    # StateChange:
+    #   required:
+    #     - address
+    #     - is_miner
+    #     - type
+    #   properties:
+    #     token:
+    #       $ref: "#/components/schemas/TokenInfo"
+    #     type:
+    #       type: string
+    #       example: "coin | token"
+    #     is_miner:
+    #       type: boolean
+    #     address:
+    #       $ref: "#/components/schemas/AddressParam"
+    #     balance_before:
+    #       type: string
+    #       example: "100000000"
+    #     balance_after:
+    #       type: string
+    #       example: "100000000"
+    #     token_id:
+    #       type: string
+    #       example: null
+    #     change:
+    #       oneOf:
+    #         - $ref: "#/components/schemas/NFTChangesArray"
+    #         - $ref: "#/components/schemas/ERC20Or1155OrCoinChange"
 
     ERC20Or1155OrCoinChange:
       type: string
