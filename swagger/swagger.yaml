@@ -2490,10 +2490,14 @@ components:
           example: "1000"
 
     TotalERC1155Batch:
-      type: array
-      items:
-        $ref: "#/components/schemas/TotalERC1155"
-
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/TotalERC1155"
+            
     Holder:
       required:
         - address
@@ -3000,7 +3004,16 @@ components:
       properties:
         args:
           type: array
-          example: [1123, "0xBb36c792B9B45Aaf8b848A1392B0d6559202729E"]
+          items:
+            anyOf:
+              - type: string
+              - type: number
+              - type: integer
+              - type: boolean
+              - type: array
+                items: {}
+              - type: object
+            example: [1123, "0xBb36c792B9B45Aaf8b848A1392B0d6559202729E"]
         method_id:
           type: string
           example: "ab470f05"
@@ -3052,9 +3065,27 @@ components:
       properties:
         output:
           type: array
+          items:
+            anyOf:
+              - type: string
+              - type: number
+              - type: integer
+              - type: boolean
+              - type: array
+                items: {}
+              - type: object
           example: [{ "type": "uint256", "value": 0 }]
         names:
           type: array
+          items:
+            anyOf:
+              - type: string
+              - type: number
+              - type: integer
+              - type: boolean
+              - type: array
+                items: {}
+              - type: object
           example: [null]
 
     StateChange:
