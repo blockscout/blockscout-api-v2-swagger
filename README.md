@@ -2,7 +2,20 @@
 
 An OpenAPI SDK generated with [typescript-fetch](https://openapi-generator.tech/docs/generators/typescript-fetch) for Blockscout REST APIs such as [HYCHAIN](https://explorer.hychain.com/api-docs).
 
+
+## Getting Started
+
 ```npm install blockscout-typescript-fetch```
+
+```typescript
+import { Configuration, DefaultApi } from "blockscout-typescript-fetch";
+
+const configuration = new Configuration({
+  basePath: env.HYCHAIN_BLOCKSCOUT_REST_URL,
+});
+
+export const hychainBlockscout = new DefaultApi(configuration);
+```
 
 ## Known Issues
 
@@ -10,7 +23,30 @@ An OpenAPI SDK generated with [typescript-fetch](https://openapi-generator.tech/
 
 The pagination support is lacking in the SDK due to it missing from the ```swagger.yaml```. It is confirmed that the pagination works as expected if the ```next_page_params``` are passed correctly. You can see this in the [Blockscout](https://github.com/blockscout/blockscout) codebase.
 
-Will update in the future. PRs welcome.
+Below is an example of doing pagination with the Address Transactions endpoint.
+
+```typescript
+  let params: GetAddressTxsRequest = {
+    addressHash: "0xC7899279eBA29CE4db5B759Df83ac83b4d9737C5",
+  };
+
+  while (true) {
+    const result = await hychainBlockscout.getAddressTxs(params);
+
+    const nextPageParams = result.nextPageParams;
+
+    if (!nextPageParams) {
+      break;
+    }
+
+    params = {
+      ...params,
+      ...nextPageParams,
+    };
+  }
+```
+
+Will update in the future. PRs welcome (;
 
 ### Swagger Definition
 
