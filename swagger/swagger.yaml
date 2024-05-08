@@ -1897,7 +1897,6 @@ components:
         - priority_fee
         - base_fee_per_gas
         - from
-        - token_transfers
         - tx_types
         - gas_used
         - created_contract

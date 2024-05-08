@@ -163,7 +163,7 @@ export interface Transaction {
      * @type {Array<TokenTransfer>}
      * @memberof Transaction
      */
-    tokenTransfers: Array<TokenTransfer>;
+    tokenTransfers?: Array<TokenTransfer>;
     /**
      * 
      * @type {Array<string>}
@@ -278,7 +278,6 @@ export function instanceOfTransaction(value: object): boolean {
     if (!('priorityFee' in value)) return false;
     if (!('baseFeePerGas' in value)) return false;
     if (!('from' in value)) return false;
-    if (!('tokenTransfers' in value)) return false;
     if (!('txTypes' in value)) return false;
     if (!('gasUsed' in value)) return false;
     if (!('createdContract' in value)) return false;
@@ -325,7 +324,7 @@ export function TransactionFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'priorityFee': json['priority_fee'],
         'baseFeePerGas': json['base_fee_per_gas'],
         'from': AddressParamFromJSON(json['from']),
-        'tokenTransfers': ((json['token_transfers'] as Array<any>).map(TokenTransferFromJSON)),
+        'tokenTransfers': json['token_transfers'] == null ? undefined : ((json['token_transfers'] as Array<any>).map(TokenTransferFromJSON)),
         'txTypes': json['tx_types'],
         'gasUsed': json['gas_used'],
         'createdContract': AddressParamFromJSON(json['created_contract']),
@@ -368,7 +367,7 @@ export function TransactionToJSON(value?: Transaction | null): any {
         'priority_fee': value['priorityFee'],
         'base_fee_per_gas': value['baseFeePerGas'],
         'from': AddressParamToJSON(value['from']),
-        'token_transfers': ((value['tokenTransfers'] as Array<any>).map(TokenTransferToJSON)),
+        'token_transfers': value['tokenTransfers'] == null ? undefined : ((value['tokenTransfers'] as Array<any>).map(TokenTransferToJSON)),
         'tx_types': value['txTypes'],
         'gas_used': value['gasUsed'],
         'created_contract': AddressParamToJSON(value['createdContract']),
