@@ -1,7 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
-README.md
 package.json
 src/apis/DefaultApi.ts
 src/apis/index.ts
@@ -30,6 +28,7 @@ src/models/GetAddressInternalTxs200Response.ts
 src/models/GetAddressLogs200Response.ts
 src/models/GetAddressTokenTransfers200Response.ts
 src/models/GetAddressTokens200Response.ts
+src/models/GetAddressTxs200Response.ts
 src/models/GetAddresses200Response.ts
 src/models/GetBlockTxs200Response.ts
 src/models/GetBlockWithdrawals200Response.ts
@@ -58,6 +57,7 @@ src/models/MarketChartItem.ts
 src/models/ModelError.ts
 src/models/NFTChange.ts
 src/models/NFTInstance.ts
+src/models/NextPageParams.ts
 src/models/OutputAndNames.ts
 src/models/OutputAndNamesOutputInner.ts
 src/models/RawTrace.ts

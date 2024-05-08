@@ -620,14 +620,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Transaction"
                   next_page_params:
-                    type: object
-                    example:
-                      {
-                        "block_number": 27736955,
-                        "index": 4,
-                        "items_count": 50,
-                      }
-
+                    $ref: "#/components/schemas/NextPageParams"
         "400":
           description: bad input parameter
 
@@ -1614,6 +1607,24 @@ components:
         type:
           type: string
           example: "token_transfer"
+
+    NextPageParams:
+      type: object
+      properties:
+        block_number:
+          type: string
+        fee:
+          type: string
+        hash:
+          type: string
+        index:
+          type: integer
+        inserted_at:
+          type: string
+        items_count:
+          type: integer
+        value:
+          type: string
 
     RawTrace:
       type: object

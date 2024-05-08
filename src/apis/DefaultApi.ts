@@ -25,6 +25,7 @@ import type {
   GetAddressLogs200Response,
   GetAddressTokenTransfers200Response,
   GetAddressTokens200Response,
+  GetAddressTxs200Response,
   GetAddresses200Response,
   GetBlockTxs200Response,
   GetBlockWithdrawals200Response,
@@ -78,6 +79,8 @@ import {
     GetAddressTokenTransfers200ResponseToJSON,
     GetAddressTokens200ResponseFromJSON,
     GetAddressTokens200ResponseToJSON,
+    GetAddressTxs200ResponseFromJSON,
+    GetAddressTxs200ResponseToJSON,
     GetAddresses200ResponseFromJSON,
     GetAddresses200ResponseToJSON,
     GetBlockTxs200ResponseFromJSON,
@@ -486,12 +489,12 @@ export interface DefaultApiInterface {
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
      */
-    getAddressTxsRaw(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetBlockTxs200Response>>;
+    getAddressTxsRaw(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressTxs200Response>>;
 
     /**
      * get address txs
      */
-    getAddressTxs(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetBlockTxs200Response>;
+    getAddressTxs(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressTxs200Response>;
 
     /**
      * 
@@ -1377,7 +1380,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * get address txs
      */
-    async getAddressTxsRaw(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetBlockTxs200Response>> {
+    async getAddressTxsRaw(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressTxs200Response>> {
         if (requestParameters['addressHash'] == null) {
             throw new runtime.RequiredError(
                 'addressHash',
@@ -1428,13 +1431,13 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetBlockTxs200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAddressTxs200ResponseFromJSON(jsonValue));
     }
 
     /**
      * get address txs
      */
-    async getAddressTxs(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetBlockTxs200Response> {
+    async getAddressTxs(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressTxs200Response> {
         const response = await this.getAddressTxsRaw(requestParameters, initOverrides);
         return await response.value();
     }
