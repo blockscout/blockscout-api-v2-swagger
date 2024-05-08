@@ -1,6 +1,6 @@
 ## blockscout-typescript-fetch
 
-An OpenAPI SDK generated with [typescript-fetch](https://openapi-generator.tech/docs/generators/typescript-fetch).
+An OpenAPI SDK generated with [typescript-fetch](https://openapi-generator.tech/docs/generators/typescript-fetch) for Blockscout REST APIs such as [HYCHAIN](https://explorer.hychain.com/api-docs).
 
 ```npm install blockscout-typescript-fetch```
 
