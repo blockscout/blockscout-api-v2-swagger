@@ -1,14 +1,14 @@
-## blockscout-typescript-fetch
+## blockscout-typescript
 
 An OpenAPI SDK generated with [typescript-fetch](https://openapi-generator.tech/docs/generators/typescript-fetch) for Blockscout REST APIs such as [HYCHAIN](https://explorer.hychain.com/api-docs).
 
 
 ## Getting Started
 
-```npm install blockscout-typescript-fetch```
+```npm install blockscout-typescript```
 
 ```typescript
-import { Configuration, DefaultApi } from "blockscout-typescript-fetch";
+import { Configuration, DefaultApi } from "blockscout-typescript";
 
 const configuration = new Configuration({
   basePath: env.HYCHAIN_BLOCKSCOUT_REST_URL,
