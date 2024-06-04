@@ -2945,6 +2945,9 @@ components:
         coin_price:
           type: string
           example: "0.00254957"
+        coin_price_change_percentage:
+          type: number
+          example: 0.58
         total_gas_used:
           type: string
           example: "0" # if 0 then hide this counter since it disabled on the application level
@@ -2955,8 +2958,10 @@ components:
           type: string
           example: "49063630"
         gas_prices:
-          type: object
-          example: { "average": 10.0, "fast": 10.0, "slow": 10.0 } # gas prices in gwei
+          $ref: "#/components/schemas/GasPrice"
+        gas_price_updated_at:
+          type: string
+          example: "2022-10-31T07:18:05.000000Z"
         static_gas_price:
           type: string
           example: "10.1"
@@ -2966,6 +2971,18 @@ components:
         network_utilization_percentage:
           type: number
           example: 40.2142
+
+    GasPrice:
+      properties:
+        average:
+          type: number
+          example: 10.0
+        fast:
+          type: number
+          example: 10.0
+        slow:
+          type: number
+          example: 10.0
 
     MarketChartItem:
       required:

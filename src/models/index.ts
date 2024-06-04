@@ -18,6 +18,7 @@ export * from './DecodedInputParameter';
 export * from './ExtendedRevertReasonAsMap';
 export * from './ExternalLibrary';
 export * from './Fee';
+export * from './GasPrice';
 export * from './GetAddressBlocksValidated200Response';
 export * from './GetAddressCoinBalanceHistory200Response';
 export * from './GetAddressInternalTxs200Response';
