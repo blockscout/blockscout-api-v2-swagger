@@ -21,6 +21,7 @@ src/models/DecodedInputParameter.ts
 src/models/ExtendedRevertReasonAsMap.ts
 src/models/ExternalLibrary.ts
 src/models/Fee.ts
+src/models/GasPrice.ts
 src/models/GetAddressBlocksValidated200Response.ts
 src/models/GetAddressCoinBalanceHistory200Response.ts
 src/models/GetAddressInternalTxs200Response.ts
