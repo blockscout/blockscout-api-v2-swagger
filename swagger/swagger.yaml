@@ -2922,12 +2922,10 @@ components:
         - total_transactions
         - average_block_time
         - coin_price
-        - coin_price_change_percentage
         - total_gas_used
         - transactions_today
         - gas_used_today
         - gas_prices
-        - gas_price_updated_at
         - static_gas_price
         - market_cap
         - network_utilization_percentage
@@ -2975,10 +2973,6 @@ components:
           example: 40.2142
 
     GasPrice:
-      required:
-        - average
-        - fast
-        - slow
       properties:
         average:
           type: number

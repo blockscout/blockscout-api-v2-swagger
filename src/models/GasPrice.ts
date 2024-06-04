@@ -24,28 +24,25 @@ export interface GasPrice {
      * @type {number}
      * @memberof GasPrice
      */
-    average: number;
+    average?: number;
     /**
      * 
      * @type {number}
      * @memberof GasPrice
      */
-    fast: number;
+    fast?: number;
     /**
      * 
      * @type {number}
      * @memberof GasPrice
      */
-    slow: number;
+    slow?: number;
 }
 
 /**
  * Check if a given object implements the GasPrice interface.
  */
 export function instanceOfGasPrice(value: object): boolean {
-    if (!('average' in value)) return false;
-    if (!('fast' in value)) return false;
-    if (!('slow' in value)) return false;
     return true;
 }
 
@@ -59,9 +56,9 @@ export function GasPriceFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'average': json['average'],
-        'fast': json['fast'],
-        'slow': json['slow'],
+        'average': json['average'] == null ? undefined : json['average'],
+        'fast': json['fast'] == null ? undefined : json['fast'],
+        'slow': json['slow'] == null ? undefined : json['slow'],
     };
 }
 

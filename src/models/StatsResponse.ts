@@ -61,7 +61,7 @@ export interface StatsResponse {
      * @type {number}
      * @memberof StatsResponse
      */
-    coinPriceChangePercentage: number;
+    coinPriceChangePercentage?: number;
     /**
      * 
      * @type {string}
@@ -91,7 +91,7 @@ export interface StatsResponse {
      * @type {string}
      * @memberof StatsResponse
      */
-    gasPriceUpdatedAt: string;
+    gasPriceUpdatedAt?: string;
     /**
      * 
      * @type {string}
@@ -121,12 +121,10 @@ export function instanceOfStatsResponse(value: object): boolean {
     if (!('totalTransactions' in value)) return false;
     if (!('averageBlockTime' in value)) return false;
     if (!('coinPrice' in value)) return false;
-    if (!('coinPriceChangePercentage' in value)) return false;
     if (!('totalGasUsed' in value)) return false;
     if (!('transactionsToday' in value)) return false;
     if (!('gasUsedToday' in value)) return false;
     if (!('gasPrices' in value)) return false;
-    if (!('gasPriceUpdatedAt' in value)) return false;
     if (!('staticGasPrice' in value)) return false;
     if (!('marketCap' in value)) return false;
     if (!('networkUtilizationPercentage' in value)) return false;
@@ -148,12 +146,12 @@ export function StatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'totalTransactions': json['total_transactions'],
         'averageBlockTime': json['average_block_time'],
         'coinPrice': json['coin_price'],
-        'coinPriceChangePercentage': json['coin_price_change_percentage'],
+        'coinPriceChangePercentage': json['coin_price_change_percentage'] == null ? undefined : json['coin_price_change_percentage'],
         'totalGasUsed': json['total_gas_used'],
         'transactionsToday': json['transactions_today'],
         'gasUsedToday': json['gas_used_today'],
         'gasPrices': GasPriceFromJSON(json['gas_prices']),
-        'gasPriceUpdatedAt': json['gas_price_updated_at'],
+        'gasPriceUpdatedAt': json['gas_price_updated_at'] == null ? undefined : json['gas_price_updated_at'],
         'staticGasPrice': json['static_gas_price'],
         'marketCap': json['market_cap'],
         'networkUtilizationPercentage': json['network_utilization_percentage'],
