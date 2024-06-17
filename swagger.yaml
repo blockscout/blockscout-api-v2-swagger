@@ -1127,6 +1127,48 @@ paths:
                     example: 10
         "400":
           description: bad input parameter
+          
+  /tokens/{address_hash}/instances/{id}/refetch-metadata:
+    patch:
+      summary: re-fetch token instance metadata
+      operationId: refetch_token_instance_metadata
+      parameters:
+        - $ref: "#/components/parameters/addressHash"
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        # description:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecaptchaBody"
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  message:
+                    type: string
+                    example: "OK"
+        "403":
+          description: Invalid reCAPTCHA response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid reCAPTCHA response"
 
   /smart-contracts:
     get:
@@ -2963,6 +3005,14 @@ components:
         transfers_count:
           type: string
           example: "1000"
+          
+    RecaptchaBody:
+      required:
+        - recaptcha_response
+      properties:
+        recaptcha_response:
+          type: string
+          example: "123"
 
     ReadMethodQueryBody:
       required:
