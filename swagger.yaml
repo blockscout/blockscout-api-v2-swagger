@@ -868,6 +868,72 @@ paths:
         "400":
           description: bad input parameter
 
+  /addresses/{address_hash}/nft:
+    get:
+      summary: get list of NFT owned by address
+      operationId: get_address_nft
+      parameters:
+        - $ref: "#/components/parameters/addressHash"
+        - in: query
+          name: type
+          schema:
+            type: string
+            example: "ERC-721,ERC-404,ERC-1155" # to return all token types you can just drop `type` from url
+      responses:
+        "200":
+          description: address
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AddressNFTInstance"
+                  next_page_params:
+                    type: object
+                    example: { "token_contract_address_hash": "0xb81afe27c103bcd42f4026cf719af6d802928765", "token_id": "1011", "token_type": "ERC-721" }
+        "400":
+          description: bad input parameter
+
+
+  /addresses/{address_hash}/nft/collections:
+    get:
+      summary: get list of NFT owned by address, grouped by collection
+      operationId: get_address_nft_collections
+      parameters:
+        - $ref: "#/components/parameters/addressHash"
+        - in: query
+          name: type
+          schema:
+            type: string
+            example: "ERC-721,ERC-404,ERC-1155" # to return all token types you can just drop `type` from url
+      responses:
+        "200":
+          description: address
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AddressNFTCollection"
+                  next_page_params:
+                    type: object
+                    example: { "token_contract_address_hash": "0xb81afe27c103bcd42f4026cf719af6d802928765", "token_type": "ERC-721" }
+        "400":
+          description: bad input parameter
+
+
   /tokens:
     get:
       summary: get tokens list
@@ -2577,6 +2643,144 @@ components:
           $ref: "#/components/schemas/AddressParam"
         token:
           $ref: "#/components/schemas/TokenInfo"
+
+    AddressNFTInstance:
+      required:
+        - token_type
+        - value
+        - is_unique
+        - id
+        - token
+        - owner
+      properties:
+        is_unique:
+          type: boolean
+        id:
+          type: string
+          example: "431"
+        holder_address_hash:
+          type: string
+          example: "0x394c399dbA25B99Ab7708EdB505d755B3aa29997"
+        image_url:
+          type: string
+          example: "example.com/picture.png"
+        animation_url:
+          type: string
+          example: "example.com/video.mp4"
+        external_app_url:
+          type: string
+          example: "d-app.com"
+        metadata:
+          type: object
+          example:
+            {
+              "year": 2023,
+              "tags": ["poap", "event"],
+              "name": "Social Listening Committee #2 Attendees",
+              "image_url": "https://assets.poap.xyz/chanel-poap-4c-2023-logo-1675083420470.png",
+              "home_url": "https://app.poap.xyz/token/6292128",
+              "external_url": "https://api.poap.tech/metadata/99010/6292128",
+              "description": "This is the POAP for attendees of the second Social Listening Committee.",
+              "attributes":
+                [
+                  { "value": "01-Feb-2023", "trait_type": "startDate" },
+                  { "value": "01-Feb-2023", "trait_type": "endDate" },
+                  { "value": "false", "trait_type": "virtualEvent" },
+                  { "value": "Paris", "trait_type": "city" },
+                  { "value": "France", "trait_type": "country" },
+                  {
+                    "value": "https://www.chanel.com",
+                    "trait_type": "eventURL",
+                  },
+                ],
+            }
+        owner:
+          $ref: "#/components/schemas/AddressParam"
+        token:
+          $ref: "#/components/schemas/TokenInfo"
+        token_type:
+          type: string
+          example: "ERC-721"
+        value:
+          type: string
+          example: "1"
+
+    AddressNFTInstanceCollection:
+      required:
+        - token_type
+        - value
+        - is_unique
+        - id
+        - owner
+      properties:
+        is_unique:
+          type: boolean
+        id:
+          type: string
+          example: "431"
+        holder_address_hash:
+          type: string
+          example: "0x394c399dbA25B99Ab7708EdB505d755B3aa29997"
+        image_url:
+          type: string
+          example: "example.com/picture.png"
+        animation_url:
+          type: string
+          example: "example.com/video.mp4"
+        external_app_url:
+          type: string
+          example: "d-app.com"
+        metadata:
+          type: object
+          example:
+            {
+              "year": 2023,
+              "tags": ["poap", "event"],
+              "name": "Social Listening Committee #2 Attendees",
+              "image_url": "https://assets.poap.xyz/chanel-poap-4c-2023-logo-1675083420470.png",
+              "home_url": "https://app.poap.xyz/token/6292128",
+              "external_url": "https://api.poap.tech/metadata/99010/6292128",
+              "description": "This is the POAP for attendees of the second Social Listening Committee.",
+              "attributes":
+                [
+                  { "value": "01-Feb-2023", "trait_type": "startDate" },
+                  { "value": "01-Feb-2023", "trait_type": "endDate" },
+                  { "value": "false", "trait_type": "virtualEvent" },
+                  { "value": "Paris", "trait_type": "city" },
+                  { "value": "France", "trait_type": "country" },
+                  {
+                    "value": "https://www.chanel.com",
+                    "trait_type": "eventURL",
+                  },
+                ],
+            }
+        owner:
+          $ref: "#/components/schemas/AddressParam"
+        token:
+          type: object
+          example: null
+        token_type:
+          type: string
+          example: "ERC-721"
+        value:
+          type: string
+          example: "1"
+
+    AddressNFTCollection:
+      required:
+        - token
+        - token_instances
+      properties:
+        token:
+          $ref: "#/components/schemas/TokenInfo"
+        amount:
+          type: string
+          example: "1"
+        token_instances:
+          type: array
+          items:
+            $ref: "#/components/schemas/AddressNFTInstanceCollection"
+
 
     SmartContract:
       properties:
