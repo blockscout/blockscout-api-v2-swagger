@@ -2199,47 +2199,47 @@ components:
             $ref: "#/components/schemas/DecodedInputParameter"
       # {'method_call': 'transferFrom(address _from, address _to, uint256 _value)', 'method_id': '23b872dd', 'parameters': [{'name': 'signature', 'type': 'bytes', 'value': '0x0'}, {'name': 'message', 'type': 'bytes', 'value': '0x01'}]}
 
-        AddressParam:
-      type: object
-      required:
-        - hash
-        - implementation_name
-        - is_contract
-        - is_verified
-        - name
-        - private_tags
-        - public_tags
-        - watchlist_names
-      properties:
-        hash:
-          type: string
-          example: "0xEb533ee5687044E622C69c58B1B12329F56eD9ad"
-        implementation_name:
-          type: string
-          example: "implementationName"
-        name:
-          type: string
-          example: "contractName"
-        is_contract:
-          type: boolean
-        is_verified:
-          type: boolean
-        private_tags:
-          type: array
-          items:
-            $ref: "#/components/schemas/AddressTag"
-        public_tags:
-          type: array
-          items:
-            $ref: "#/components/schemas/AddressTag"
-        watchlist_names:
-          type: array
-          items:
-            $ref: "#/components/schemas/WatchlistName"
-        address:
-          type: string
-          example: "0x123abc..."
-          description: "Address"
+      TokenAddressParam:
+        type: object
+        required:
+          - hash
+          - implementation_name
+          - is_contract
+          - is_verified
+          - name
+          - private_tags
+          - public_tags
+          - watchlist_names
+        properties:
+          hash:
+            type: string
+            example: "0xEb533ee5687044E622C69c58B1B12329F56eD9ad"
+          implementation_name:
+            type: string
+            example: "implementationName"
+          name:
+            type: string
+            example: "contractName"
+          is_contract:
+              type: boolean
+          is_verified:
+            type: boolean
+          private_tags:
+            type: array
+            items:
+                $ref: "#/components/schemas/AddressTag"
+            public_tags:
+              type: array
+              items:
+                $ref: "#/components/schemas/AddressTag"
+            watchlist_names:
+              type: array
+                items:
+                  $ref: "#/components/schemas/WatchlistName"
+            address:
+              type: string
+              example: "0x123abc..."
+              description: "Address"
 
     TransactionSummary:
       type: object
