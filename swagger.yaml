@@ -420,6 +420,22 @@ paths:
         "400":
           description: bad input parameter
 
+  /transactions/{transaction_hash}/summary:
+    get:
+      summary: get human-readable transaction summary
+      operationId: get_transaction_summary
+      parameters:
+        - $ref: "#/components/parameters/transactionHash"
+      responses:
+        "200":
+          description: human-readable transaction summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionSummary"
+        "400":
+          description: bad input parameter
+
   /blocks/{block_number_or_hash}:
     get:
       summary: get block info
@@ -896,10 +912,14 @@ paths:
                       $ref: "#/components/schemas/AddressNFTInstance"
                   next_page_params:
                     type: object
-                    example: { "token_contract_address_hash": "0xb81afe27c103bcd42f4026cf719af6d802928765", "token_id": "1011", "token_type": "ERC-721" }
+                    example:
+                      {
+                        "token_contract_address_hash": "0xb81afe27c103bcd42f4026cf719af6d802928765",
+                        "token_id": "1011",
+                        "token_type": "ERC-721",
+                      }
         "400":
           description: bad input parameter
-
 
   /addresses/{address_hash}/nft/collections:
     get:
@@ -929,10 +949,13 @@ paths:
                       $ref: "#/components/schemas/AddressNFTCollection"
                   next_page_params:
                     type: object
-                    example: { "token_contract_address_hash": "0xb81afe27c103bcd42f4026cf719af6d802928765", "token_type": "ERC-721" }
+                    example:
+                      {
+                        "token_contract_address_hash": "0xb81afe27c103bcd42f4026cf719af6d802928765",
+                        "token_type": "ERC-721",
+                      }
         "400":
           description: bad input parameter
-
 
   /tokens:
     get:
@@ -1193,7 +1216,7 @@ paths:
                     example: 10
         "400":
           description: bad input parameter
-          
+
   /tokens/{address_hash}/instances/{id}/refetch-metadata:
     patch:
       summary: re-fetch token instance metadata
@@ -2176,6 +2199,203 @@ components:
             $ref: "#/components/schemas/DecodedInputParameter"
       # {'method_call': 'transferFrom(address _from, address _to, uint256 _value)', 'method_id': '23b872dd', 'parameters': [{'name': 'signature', 'type': 'bytes', 'value': '0x0'}, {'name': 'message', 'type': 'bytes', 'value': '0x01'}]}
 
+    TokenAddressParam:
+      type: object
+      required:
+        - hash
+        - implementation_name
+        - is_contract
+        - is_verified
+        - name
+        - private_tags
+        - public_tags
+        - watchlist_names
+      properties:
+        hash:
+          type: string
+          example: "0xEb533ee5687044E622C69c58B1B12329F56eD9ad"
+        implementation_name:
+          type: string
+          example: "implementationName"
+        name:
+          type: string
+          example: "contractName"
+        is_contract:
+          type: boolean
+        is_verified:
+          type: boolean
+        private_tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/AddressTag"
+        public_tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/AddressTag"
+        watchlist_names:
+          type: array
+          items:
+            $ref: "#/components/schemas/WatchlistName"
+        address:
+          type: string
+          example: "0x123abc..."
+          description: "Address"
+
+    TransactionSummary:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: "#/components/schemas/TransactionSummaryObj"
+
+    TransactionSummaryObj:
+      type: object
+      properties:
+        summaries:
+          type: array
+          items:
+            $ref: "#/components/schemas/Summary"
+
+    Summary:
+      type: object
+      required:
+        - summary_template
+        - summary_template_variables
+      properties:
+        summary_template:
+          type: string
+          example: "{action_type} of {amount} {token}"
+          description: "Summary template"
+        summary_template_variables:
+          $ref: "#/components/schemas/SummaryTemplateVariables"
+          description: "Variables for summary"
+
+    SummaryTemplateVariables:
+      type: object
+      required:
+        - action_type
+        - amount
+        - token
+      properties:
+        action_type:
+          $ref: "#/components/schemas/SummaryVariable"
+          description: "Action type"
+        amount:
+          $ref: "#/components/schemas/SummaryVariableCurrency"
+          description: "Amount"
+        token:
+          $ref: "#/components/schemas/SummaryVariableToken"
+          description: "Token info"
+
+    SummaryVariable:
+      type: object
+      required:
+        - type
+        - value
+      properties:
+        type:
+          type: string
+          example: "string"
+          description: "Variable type"
+        value:
+          type: string
+          example: "Registered withdrawal of"
+          description: "Action Type"
+
+    SummaryVariableCurrency:
+      type: object
+      required:
+        - type
+        - value
+      properties:
+        type:
+          type: string
+          example: "currency"
+          description: "Currency type"
+        value:
+          type: string
+          example: "0.195999999980484004"
+          description: "Value"
+
+    SummaryVariableToken:
+      type: object
+      required:
+        - type
+        - value
+      properties:
+        type:
+          type: string
+          example: "token"
+          description: "Type"
+        value:
+          $ref: "#/components/schemas/TokenInfoDetailed"
+          description: "Token info"
+
+    TokenInfoDetailed:
+      type: object
+      required:
+        - address
+        - circulating_market_cap
+        - decimals
+        - exchange_rate
+        - holders
+        - icon_url
+        - name
+        - symbol
+        - total_supply
+        - type
+        - volume_24h
+      properties:
+        address:
+          type: string
+          example: "0xBEEF69Ac7870777598A04B2bd4771c71212E6aBc"
+          description: "Token Address"
+        circulating_market_cap:
+          type: string
+          example: "0.0"
+          description: "Token circulating market cap"
+        decimals:
+          type: string
+          example: "18"
+          description: "Token decimals"
+        exchange_rate:
+          type: string
+          example: "2890.96"
+          description: "Token exchange rate"
+        holders:
+          type: string
+          example: "2999"
+          description: "Token holders amount"
+        icon_url:
+          type: string
+          example: "https://assets.coingecko.com/coins/images/39410/small/Steakhouse_logo-05.jpg?1722053893"
+          description: "Token image URL "
+        name:
+          type: string
+          example: "Steakhouse Resteaking Vault"
+          description: "Token name"
+        symbol:
+          type: string
+          example: "steakLRT"
+          description: "Token symbol"
+        total_supply:
+          type: string
+          example: "9710057205959239302188"
+          description: "Token total supply"
+        type:
+          type: string
+          example: "ERC-20"
+          description: "Token type"
+        volume_24h:
+          type: string
+          example: "24298.765344836862"
+          description: "Token trading volume for past 24h"
+
     DecodedInputParameter:
       type: object
       required:
@@ -2781,7 +3001,6 @@ components:
           items:
             $ref: "#/components/schemas/AddressNFTInstanceCollection"
 
-
     SmartContract:
       properties:
         verified_twin_address_hash:
@@ -3209,7 +3428,7 @@ components:
         transfers_count:
           type: string
           example: "1000"
-          
+
     RecaptchaBody:
       required:
         - recaptcha_response
