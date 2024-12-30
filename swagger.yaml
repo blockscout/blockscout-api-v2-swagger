@@ -59,7 +59,7 @@ paths:
                         "items_count": 50,
                         "name": "RealToken S 13245 Monica St Detroit MI",
                         "q": "1",
-                        "tx_hash": null,
+                        "transaction_hash": null,
                       }
         "400":
           description: bad input parameter
@@ -102,7 +102,7 @@ paths:
           schema:
             type: string
             example: "approve,transfer,multicall,mint,commit"
-      summary: get txs
+      summary: get transactions
       operationId: get_txs
       responses:
         "200":
@@ -163,11 +163,11 @@ paths:
 
   /main-page/transactions:
     get:
-      summary: get main page txs
+      summary: get main page transactions
       operationId: get_main_page_txs
       responses:
         "200":
-          description: txs
+          description: transactions
           content:
             application/json:
               schema:
@@ -215,11 +215,11 @@ paths:
 
   /stats/charts/transactions:
     get:
-      summary: get txs chart
+      summary: get transactions chart
       operationId: get_txs_chart
       responses:
         "200":
-          description: tx chart
+          description: transaction chart
           content:
             application/json:
               schema:
@@ -257,13 +257,13 @@ paths:
 
   /transactions/{transaction_hash}:
     get:
-      summary: get tx info
+      summary: get transaction info
       operationId: get_tx
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
         "200":
-          description: tx info
+          description: transaction info
           content:
             application/json:
               schema:
@@ -318,13 +318,13 @@ paths:
           description: bad input parameter
   /transactions/{transaction_hash}/internal-transactions:
     get:
-      summary: get internal txs
+      summary: get internal transactions
       operationId: get_internal_txs
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
         "200":
-          description: internal txs
+          description: internal transactions
           content:
             application/json:
               schema:
@@ -357,7 +357,7 @@ paths:
         - $ref: "#/components/parameters/transactionHash"
       responses:
         "200":
-          description: internal txs
+          description: internal transactions
           content:
             application/json:
               schema:
@@ -454,7 +454,7 @@ paths:
 
   /blocks/{block_number_or_hash}/transactions:
     get:
-      summary: get block txs
+      summary: get block transactions
       operationId: get_block_txs
       parameters:
         - $ref: "#/components/parameters/blockNumberOrHash"
@@ -582,7 +582,7 @@ paths:
 
   /addresses/{address_hash}/transactions:
     get:
-      summary: get address txs
+      summary: get address transactions
       operationId: get_address_txs
       parameters:
         - $ref: "#/components/parameters/addressHash"
@@ -662,7 +662,7 @@ paths:
 
   /addresses/{address_hash}/internal-transactions:
     get:
-      summary: get address internal txs
+      summary: get address internal transactions
       operationId: get_address_internal_txs
       parameters:
         - $ref: "#/components/parameters/addressHash"
@@ -1588,8 +1588,8 @@ components:
         - state_root
         - timestamp
         - total_difficulty
-        - tx_count
-        - tx_fees
+        - transaction_count
+        - transaction_fees
         - type
         - uncles_hashes
         - withdrawals_count
@@ -1654,10 +1654,10 @@ components:
         total_difficulty:
           type: string
           example: "58750003716598352816469"
-        tx_count:
+        transaction_count:
           type: integer
           example: 120
-        tx_fees:
+        transaction_fees:
           type: string
           example: "306681898876578498"
         type:
@@ -1683,7 +1683,7 @@ components:
         - to
         - token
         - total
-        - tx_hash
+        - transaction_hash
         - type
       properties:
         block_hash:
@@ -1710,7 +1710,7 @@ components:
             - $ref: "#/components/schemas/TotalERC721"
             - $ref: "#/components/schemas/TotalERC1155"
             - $ref: "#/components/schemas/TotalERC1155Batch"
-        tx_hash:
+        transaction_hash:
           type: string
           example: "0x6662ad1ad2ea899e9e27832dc202fd2ef915a5d2816c1142e6933cff93f7c592"
         type:
@@ -1855,7 +1855,7 @@ components:
         - index
         - smart_contract
         - topics
-        - tx_hash
+        - transaction_hash
       properties:
         address:
           $ref: "#/components/schemas/AddressParam"
@@ -1900,7 +1900,7 @@ components:
           items:
             type: string
             example: "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c"
-        tx_hash:
+        transaction_hash:
           type: string
           example: "0x08ea4d75ad0abe327a7fd368733eaeac43077989e635d800530d7906ebf3bd54"
 
@@ -1989,12 +1989,12 @@ components:
         - base_fee_per_gas
         - from
         - token_transfers
-        - tx_types
+        - transaction_types
         - gas_used
         - created_contract
         - position
         - nonce
-        - has_error_in_internal_txs
+        - has_error_in_internal_transactions
         - actions
         - decoded_input
         - token_transfers_overflow
@@ -2003,7 +2003,7 @@ components:
         - max_priority_fee_per_gas
         - revert_reason
         - confirmation_duration
-        - tx_tag
+        - transaction_tag
       properties:
         timestamp:
           type: string
@@ -2060,7 +2060,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/TokenTransfer"
-        tx_types:
+        transaction_types:
           type: array
           items:
             type: string
@@ -2083,7 +2083,7 @@ components:
         nonce:
           type: integer
           example: 115
-        has_error_in_internal_txs:
+        has_error_in_internal_transactions:
           type: boolean
           example: false
         actions:
@@ -2110,9 +2110,9 @@ components:
         confirmation_duration:
           type: object
           example: [0, 17479.0] # 0..17479 milliseconds, it could be [] - unknown or [n] - exact.
-        tx_tag:
+        transaction_tag:
           type: string
-          example: "private_tx_tag"
+          example: "private_transaction_tag"
 
     ExtendedRevertReasonAsMap:
       type: object
@@ -2526,7 +2526,7 @@ components:
         creator_address_hash:
           type: string
           example: "0xEb533ee5687044E622C69c58B1B12329F56eD9ad"
-        creation_tx_hash:
+        creation_transaction_hash:
           type: string
           example: "0x1f610ff9c1efad6b5a8bb6afcc0786cd7343f03f9a61e2544fcff908cedee924"
         token:
@@ -2598,9 +2598,9 @@ components:
         - $ref: "#/components/schemas/Address"
         - type: object
           required:
-            - tx_count
+            - transaction_count
           properties:
-            tx_count:
+            transaction_count:
               type: string
               example: "1234"
 
@@ -3302,14 +3302,14 @@ components:
     SearchResultTransaction:
       required:
         - timestamp
-        - tx_hash
+        - transaction_hash
         - type
         - url
       properties:
         timestamp:
           type: string
           example: "2022-10-31T07:18:05.000000Z"
-        tx_hash:
+        transaction_hash:
           type: string
           example: "0xe38c6772f33edfbd218f59853befe18391cb786f911fb6c0b00ed6dd72ef6e69"
         type:
@@ -3408,12 +3408,12 @@ components:
     TransactionChartItem:
       required:
         - date
-        - tx_count
+        - transaction_count
       properties:
         date:
           type: string
           example: "2022-10-31"
-        tx_count:
+        transaction_count:
           type: integer
           example: 622
 
@@ -3558,7 +3558,7 @@ components:
         - has_constructor_args
         - language
         - optimization_enabled
-        - tx_count
+        - transaction_count
         - verified_at
       properties:
         address:
@@ -3576,7 +3576,7 @@ components:
           type: boolean
         optimization_enabled:
           type: boolean
-        tx_count:
+        transaction_count:
           type: integer
         verified_at:
           type: string
@@ -3772,7 +3772,7 @@ components:
             total:
               decimals: "6"
               value: "830000000"
-            tx_hash: "0x6662ad1ad2ea899e9e27832dc202fd2ef915a5d2816c1142e6933cff93f7c592"
+            transaction_hash: "0x6662ad1ad2ea899e9e27832dc202fd2ef915a5d2816c1142e6933cff93f7c592"
             type: "token_transfer"
         next_page_params:
           {
@@ -3820,7 +3820,7 @@ components:
             total:
               decimals: "6"
               value: "830000000"
-            tx_hash: "0x6662ad1ad2ea899e9e27832dc202fd2ef915a5d2816c1142e6933cff93f7c592"
+            transaction_hash: "0x6662ad1ad2ea899e9e27832dc202fd2ef915a5d2816c1142e6933cff93f7c592"
             type: "token_transfer"
         next_page_params: { "block_number": 4, "index": 2 }
     TokenTransferALotOfBatches:
@@ -3862,7 +3862,7 @@ components:
             total:
               decimals: "6"
               value: "830000000"
-            tx_hash: "0x6662ad1ad2ea899e9e27832dc202fd2ef915a5d2816c1142e6933cff93f7c592"
+            transaction_hash: "0x6662ad1ad2ea899e9e27832dc202fd2ef915a5d2816c1142e6933cff93f7c592"
             type: "token_transfer"
         next_page_params:
           {
