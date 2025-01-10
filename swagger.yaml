@@ -1907,7 +1907,7 @@ components:
     InternalTransaction:
       type: object
       required:
-        - block
+        - block_number
         - created_contract
         - error
         - from
@@ -1920,7 +1920,7 @@ components:
         - type
         - value
       properties:
-        block:
+        block_number:
           type: integer
           example: 8844586
         created_contract:
@@ -1973,7 +1973,7 @@ components:
         - timestamp
         - fee
         - gas_limit
-        - block
+        - block_number
         - status
         - method
         - confirmations
@@ -2012,7 +2012,7 @@ components:
           $ref: "#/components/schemas/Fee"
         gas_limit:
           type: integer
-        block:
+        block_number:
           type: integer
           format: int32
           example: 23484035
