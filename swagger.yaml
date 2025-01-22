@@ -2009,7 +2009,7 @@ components:
         - type
         - exchange_rate
         - to
-        - tx_burnt_fee
+        - transaction_burnt_fee
         - max_fee_per_gas
         - result
         - hash
@@ -2062,7 +2062,7 @@ components:
           example: "1866.51"
         to:
           $ref: "#/components/schemas/AddressParam"
-        tx_burnt_fee:
+        transaction_burnt_fee:
           type: string
           example: "1099596081903840"
         max_fee_per_gas:
