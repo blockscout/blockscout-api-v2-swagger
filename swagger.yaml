@@ -302,7 +302,7 @@ paths:
 
   /transactions/{transaction_hash}/token-transfers:
     get:
-      summary: get token transfers
+      summary: get transaction token transfers
       operationId: get_transaction_token_transfers
       parameters:
         - $ref: "#/components/parameters/transactionHash"
@@ -347,8 +347,8 @@ paths:
           description: bad input parameter
   /transactions/{transaction_hash}/internal-transactions:
     get:
-      summary: get internal transactions
-      operationId: get_internal_txs
+      summary: get transaction internal transactions
+      operationId: get_transaction_internal_txs
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
@@ -380,8 +380,8 @@ paths:
           description: bad input parameter
   /transactions/{transaction_hash}/logs:
     get:
-      summary: get logs
-      operationId: get_logs
+      summary: get transaction logs
+      operationId: get_transaction_logs
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
@@ -407,8 +407,8 @@ paths:
           description: bad input parameter
   /transactions/{transaction_hash}/raw-trace:
     get:
-      summary: get raw trace
-      operationId: get_raw_trace
+      summary: get transaction raw trace
+      operationId: get_transaction_raw_trace
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
@@ -424,8 +424,8 @@ paths:
           description: bad input parameter
   /transactions/{transaction_hash}/state-changes:
     get:
-      summary: get state changes
-      operationId: get_state_changes
+      summary: get transaction state changes
+      operationId: get_transaction_state_changes
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
@@ -1374,7 +1374,7 @@ paths:
 
   /smart-contracts/{address_hash}/methods-read:
     get:
-      summary: get read methods
+      summary: get verified smart-contract read methods
       operationId: get_read_methods
       parameters:
         - $ref: "#/components/parameters/addressHash"
@@ -1406,7 +1406,7 @@ paths:
 
   /smart-contracts/{address_hash}/methods-read-proxy:
     get:
-      summary: get read methods proxy
+      summary: get verified smart-contract read methods proxy
       operationId: get_read_methods_proxy
       parameters:
         - $ref: "#/components/parameters/addressHash"
@@ -1434,7 +1434,7 @@ paths:
 
   /smart-contracts/{address_hash}/methods-write:
     get:
-      summary: get write methods
+      summary: get verified smart-contract write methods
       operationId: get_write_methods
       parameters:
         - $ref: "#/components/parameters/addressHash"
@@ -1460,7 +1460,7 @@ paths:
 
   /smart-contracts/{address_hash}/methods-write-proxy:
     get:
-      summary: get write methods proxy
+      summary: get verified smart-contract write methods proxy
       operationId: get_write_methods_proxy
       parameters:
         - $ref: "#/components/parameters/addressHash"
@@ -1486,7 +1486,7 @@ paths:
 
   /smart-contracts/{address_hash}/query-read-method:
     post:
-      summary: query read method
+      summary: query verified smart-contract read method
       operationId: query_read_method
       parameters:
         - $ref: "#/components/parameters/addressHash"
