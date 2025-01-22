@@ -161,34 +161,34 @@ paths:
         "400":
           description: bad input parameter
 
-    /token-transfers:
-      get:
-        summary: get token transfers
-        operationId: get_token_transfers
-        responses:
-          "200":
-            description: token transfers
-            content:
-              application/json:
-                schema:
-                  type: object
-                  required:
-                    - items
-                    - next_page_params
-                  properties:
+  /token-transfers:
+    get:
+      summary: get token transfers
+      operationId: get_token_transfers
+      responses:
+        "200":
+          description: token transfers
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  items:
+                    type: array
                     items:
-                      type: array
-                      items:
-                        $ref: "#/components/schemas/TokenTransfer"
-                    next_page_params:
-                      type: object
-                      example:
-                        {
-                          "block_number": 27170298,
-                          "index": 0
-                        }
-          "400":
-            description: bad input parameter
+                      $ref: "#/components/schemas/TokenTransfer"
+                  next_page_params:
+                    type: object
+                    example:
+                      {
+                        "block_number": 27170298,
+                        "index": 0
+                      }
+        "400":
+          description: bad input parameter
 
   /main-page/transactions:
     get:
@@ -303,7 +303,7 @@ paths:
   /transactions/{transaction_hash}/token-transfers:
     get:
       summary: get token transfers
-      operationId: get_token_transfers
+      operationId: get_transaction_token_transfers
       parameters:
         - $ref: "#/components/parameters/transactionHash"
         - in: query
