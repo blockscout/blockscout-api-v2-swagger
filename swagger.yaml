@@ -190,6 +190,34 @@ paths:
         "400":
           description: bad input parameter
 
+  /internal-transactions:
+    get:
+      summary: get internal transactions
+      operationId: get_internal_transactions
+      responses:
+        "200":
+          description: internal transactions
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                  - next_page_params
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/InternalTransaction"
+                  next_page_params:
+                    type: object
+                    example:
+                      {
+                        "block_number": 27170298,
+                        "index": 0,
+                        "transaction_index": 0
+                      }
+
   /main-page/transactions:
     get:
       summary: get main page transactions
