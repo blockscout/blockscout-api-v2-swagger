@@ -1580,6 +1580,20 @@ paths:
                   next_page_params:
                     type: object
                     example: { "index": 1, "items_count": 50 }
+  
+  /proxy/account-abstraction/status:
+    get:
+      summary: get account abstraction indexing status
+      operationId: get_account_abstraction_status
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v1IndexerStatus"
+        "500":
+          description: unexpected error
 
 components:
   parameters:
@@ -3789,6 +3803,25 @@ components:
         type:
           type: string
           example: "burn | collect | swap"
+    v1IndexerStatus:
+      properties:
+        finished_past_indexing:
+          type: boolean
+        v06:
+          $ref: '#/components/schemas/v1EntryPointIndexerStatus'
+        v07:
+          $ref: '#/components/schemas/v1EntryPointIndexerStatus'
+
+    v1EntryPointIndexerStatus:
+      properties:
+        enabled:
+          type: boolean
+        live:
+          type: boolean
+        past_db_logs_indexing_finished:
+          type: boolean
+        past_rpc_logs_indexing_finished:
+          type: boolean
   examples:
     TokenTransferLarge1155Batch:
       value:
