@@ -1780,7 +1780,6 @@ components:
             - $ref: "#/components/schemas/TotalERC20"
             - $ref: "#/components/schemas/TotalERC721"
             - $ref: "#/components/schemas/TotalERC1155"
-            - $ref: "#/components/schemas/TotalERC1155Batch"
         transaction_hash:
           type: string
           example: "0x6662ad1ad2ea899e9e27832dc202fd2ef915a5d2816c1142e6933cff93f7c592"
@@ -2543,6 +2542,18 @@ components:
         name:
           type: string
           example: "contractName"
+        ens_domain_name:
+          type: string
+          example: "domain.eth"
+        metadata:
+          type: object
+          example: {
+                "slug": "tag_slug",
+                "name": "Tag name",
+                "tagType": "name",
+                "ordinal": 0,
+                "meta": {}
+            }
         is_contract:
           type: boolean
         private_tags:
@@ -2842,6 +2853,9 @@ components:
         token_id:
           type: string
           example: "1"
+        token_instance:
+          $ref: "#/components/schemas/NFTInstance"
+
 
     TotalERC1155:
       required:
@@ -2858,11 +2872,8 @@ components:
         value:
           type: string
           example: "1000"
-
-    TotalERC1155Batch:
-      type: array
-      items:
-        $ref: "#/components/schemas/TotalERC1155"
+        token_instance:
+          $ref: "#/components/schemas/NFTInstance"
 
     Holder:
       required:
