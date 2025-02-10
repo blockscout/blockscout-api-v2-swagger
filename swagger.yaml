@@ -3417,6 +3417,7 @@ components:
           example: "1.0"
         indexed_internal_transactions_ratio:
           type: string
+          nullable: true
           example: "1.0"
 
     StatsResponse:
