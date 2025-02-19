@@ -1749,7 +1749,6 @@ components:
         - block_hash
         - from
         - log_index
-        - method
         - timestamp
         - to
         - token
