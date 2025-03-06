@@ -3100,8 +3100,6 @@ components:
           type: boolean
         is_verified_via_eth_bytecode_db:
           type: boolean
-        is_vyper_contract:
-          type: boolean
         is_self_destructed:
           type: boolean
         can_be_visualized_via_sol2uml:
