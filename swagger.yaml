@@ -3641,7 +3641,6 @@ components:
         - has_constructor_args
         - language
         - optimization_enabled
-        - transaction_count
         - verified_at
       properties:
         address:
