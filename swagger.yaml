@@ -1400,34 +1400,6 @@ paths:
         "400":
           description: bad input parameter
 
-  /smart-contracts/{address_hash}/query-read-method:
-    post:
-      summary: query verified smart-contract read method
-      operationId: query_read_method
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-      requestBody:
-        # description:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ReadMethodQueryBody"
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/ReadMethodResponse"
-                    # - $ref: '#/components/schemas/ReadMethodWithoutValue'
-
-        "400":
-          description: bad input parameter
-
   /config/json-rpc-url:
     get:
       summary: get json rpc url
