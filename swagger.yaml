@@ -1400,118 +1400,6 @@ paths:
         "400":
           description: bad input parameter
 
-  /smart-contracts/{address_hash}/methods-read:
-    get:
-      summary: get verified smart-contract read methods
-      operationId: get_read_methods
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-        - in: query
-          name: is_custom_abi
-          schema:
-            type: string
-            example: "true"
-        - in: query
-          name: from
-          schema:
-            type: string
-            example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
-
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/ReadMethodWithValue"
-                    - $ref: "#/components/schemas/ReadMethodWithoutValue"
-
-        "400":
-          description: bad input parameter
-
-  /smart-contracts/{address_hash}/methods-read-proxy:
-    get:
-      summary: get verified smart-contract read methods proxy
-      operationId: get_read_methods_proxy
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-        - in: query
-          name: is_custom_abi
-          schema:
-            type: string
-            example: "true"
-        - in: query
-          name: from
-          schema:
-            type: string
-            example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/ReadMethodWithValue"
-                    - $ref: "#/components/schemas/ReadMethodWithoutValue"
-
-  /smart-contracts/{address_hash}/methods-write:
-    get:
-      summary: get verified smart-contract write methods
-      operationId: get_write_methods
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-        - in: query
-          name: is_custom_abi
-          schema:
-            type: string
-            example: "true"
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/WriteMethod"
-                    # - $ref: '#/components/schemas/ReadMethodWithoutValue'
-
-        "400":
-          description: bad input parameter
-
-  /smart-contracts/{address_hash}/methods-write-proxy:
-    get:
-      summary: get verified smart-contract write methods proxy
-      operationId: get_write_methods_proxy
-      parameters:
-        - $ref: "#/components/parameters/addressHash"
-        - in: query
-          name: is_custom_abi
-          schema:
-            type: string
-            example: "true"
-      responses:
-        "200":
-          description: smart contract
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/WriteMethod"
-                    # - $ref: '#/components/schemas/ReadMethodWithoutValue'
-
-        "400":
-          description: bad input parameter
-
   /smart-contracts/{address_hash}/query-read-method:
     post:
       summary: query verified smart-contract read method
@@ -2654,21 +2542,9 @@ components:
           type: boolean
         has_beacon_chain_withdrawals:
           type: boolean
-        has_custom_methods_read:
-          type: boolean
-        has_custom_methods_write:
-          type: boolean
         has_decompiled_code:
           type: boolean
         has_logs:
-          type: boolean
-        has_methods_read:
-          type: boolean
-        has_methods_write:
-          type: boolean
-        has_methods_read_proxy:
-          type: boolean
-        has_methods_write_proxy:
           type: boolean
         has_token_transfers:
           type: boolean
