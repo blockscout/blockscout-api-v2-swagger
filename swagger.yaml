@@ -1749,8 +1749,6 @@ components:
         - block_hash
         - from
         - log_index
-        - method
-        - timestamp
         - to
         - token
         - total
@@ -1763,8 +1761,8 @@ components:
         from:
           $ref: "#/components/schemas/AddressParam"
         log_index:
-          type: string
-          example: "243"
+          type: integer
+          example: 16
         method:
           type: string
           example: "transfer"
