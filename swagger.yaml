@@ -2512,8 +2512,6 @@ components:
           type: boolean
         has_beacon_chain_withdrawals:
           type: boolean
-        has_decompiled_code:
-          type: boolean
         has_logs:
           type: boolean
         has_token_transfers:
