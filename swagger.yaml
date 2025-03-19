@@ -2889,8 +2889,6 @@ components:
         token_id:
           type: string
           example: "10000"
-        token:
-          $ref: "#/components/schemas/TokenInfo"
 
     NFTInstance:
       required:
