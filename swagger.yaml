@@ -3709,7 +3709,7 @@ components:
         total_blocks:
           type: string
           example: "508700"
-        total_:
+        total_addresses:
           type: string
           example: "982340"
         total_transactions:
