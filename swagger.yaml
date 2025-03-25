@@ -12,7 +12,7 @@ info:
   version: "1.0.0"
   title: BlockScout API
   contact:
-    email: you@your-company.com
+    email: info@yblockscout.com
   license:
     name: Apache 2.0
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -23,14 +23,24 @@ paths:
       parameters:
         - in: query
           name: q
+          description: |
+            Search query string. Can be:
+            * Token symbol or name (e.g., "USDT")
+            * Address hash (0x...)
+            * Transaction hash
+            * Block number or hash
           schema:
             type: string
             example: "USDT"
-      summary: search
+      summary: Search for tokens, addresses, contracts, blocks, or transactions by identifier
+      description: |
+        Performs a unified search across multiple blockchain entity types including tokens, 
+        addresses, contracts, blocks, and transactions.
       operationId: search
       responses:
         "200":
-          description: search response
+          description: Successful search response containing matched items and pagination information.
+            Results are ordered by relevance and limited to 50 items per page.
           content:
             application/json:
               schema:
@@ -62,51 +72,81 @@ paths:
                         "transaction_hash": null,
                       }
         "400":
-          description: bad input parameter
+          description: |
+            Invalid request. This can occur if:
+            * The search query is empty or missing
+            * The query string contains invalid characters
+            * The query length exceeds the maximum limit
 
   /search/check-redirect:
     get:
       parameters:
         - in: query
           name: q
+          description: |
+            Search query string to check for possible redirection.
+            Determines if the query exactly matches an entity (address, transaction, block).
           schema:
             type: string
             example: "USDT"
-      summary: search redirect
+      summary: Check if search query should redirect to a specific entity page
+      description: |
+        Checks if a search query redirects to a specific entity page
+        rather than showing search results.
       operationId: search redirect
       responses:
         "200":
-          description: search response
+          description: Response indicating whether the query should redirect to a specific entity page.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SearchResultRedirect"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /transactions:
     get:
       parameters:
         - in: query
           name: filter
+          description: |
+            Filter transactions by status:
+            * pending - Transactions waiting to be mined/validated
+            * validated - Confirmed transactions included in blocks
           schema:
             type: string
             example: "pending | validated"
         - in: query
           name: type
+          description: |
+            Filter by transaction type. Comma-separated list of:
+            * token_transfer - Token transfer transactions
+            * contract_creation - Contract deployment transactions  
+            * contract_call - Contract method call transactions
+            * coin_transfer - Native coin transfer transactions
+            * token_creation - Token creation transactions
           schema:
             type: string
             example: "token_transfer,contract_creation,contract_call,coin_transfer,token_creation"
         - in: query
           name: method
+          description: |
+            Filter by contract method name. Comma-separated list of:
+            * approve - Token approval method
+            * transfer - Token transfer method
+            * multicall - Batch transaction method
+            * mint - Token minting method
+            * commit - State commitment method
           schema:
             type: string
             example: "approve,transfer,multicall,mint,commit"
-      summary: get transactions
+      summary: List blockchain transactions with filtering options for status, type, and method
+      description: |
+        Retrieves a paginated list of transactions with optional filtering by status, type, and method.
       operationId: get_txs
       responses:
         "200":
-          description: block
+          description: List of transactions with pagination information.
           content:
             application/json:
               schema:
@@ -128,21 +168,28 @@ paths:
                         "items_count": 50,
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /blocks:
     get:
       parameters:
         - in: query
           name: type
+          description: |
+            Filter by block type:
+            * block - Standard blocks in the main chain
+            * uncle - Uncle/ommer blocks (valid but not in main chain)
+            * reorg - Blocks from chain reorganizations
           schema:
             type: string
             example: "block | uncle | reorg"
-      summary: get blocks
+      summary: List blocks with optional filtering by block type
+      description: |
+        Retrieves a paginated list of blocks with optional filtering by block type.
       operationId: get_blocks
       responses:
         "200":
-          description: block
+          description: List of blocks with pagination information.
           content:
             application/json:
               schema:
@@ -159,15 +206,17 @@ paths:
                     type: object
                     example: { "block_number": 27729304, "items_count": 50 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /token-transfers:
     get:
-      summary: get token transfers
+      summary: List token transfers across all token types (ERC-20, ERC-721, ERC-1155)
+      description: |
+        Retrieves a paginated list of token transfers across all token types (ERC-20, ERC-721, ERC-1155).
       operationId: get_token_transfers
       responses:
         "200":
-          description: token transfers
+          description: List of token transfers with pagination information.
           content:
             application/json:
               schema:
@@ -188,15 +237,18 @@ paths:
                         "index": 0
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /internal-transactions:
     get:
-      summary: get internal transactions
+      summary: List internal transactions generated during smart contract execution
+      description: |
+        Retrieves a paginated list of internal transactions. Internal transactions are generated 
+        during contract execution and not directly recorded on the blockchain.
       operationId: get_internal_transactions
       responses:
         "200":
-          description: internal transactions
+          description: List of internal transactions with pagination information.
           content:
             application/json:
               schema:
@@ -220,11 +272,13 @@ paths:
 
   /main-page/transactions:
     get:
-      summary: get main page transactions
+      summary: Retrieve recent transactions as displayed on Blockscout homepage
+      description: |
+        Retrieves a limited set of recent transactions displayed on the home page.
       operationId: get_main_page_txs
       responses:
         "200":
-          description: transactions
+          description: List of recent transactions on the home page.
           content:
             application/json:
               schema:
@@ -234,11 +288,13 @@ paths:
 
   /main-page/blocks:
     get:
-      summary: get main page blocks
+      summary: Retrieve recent blocks as displayed on Blockscout homepage
+      description: |
+        Retrieves a limited set of recent blocks for display on the main page or dashboard.
       operationId: get_main_page_tokens
       responses:
         "200":
-          description: blocks
+          description: List of recent blocks on the home page.
           content:
             application/json:
               schema:
@@ -248,11 +304,13 @@ paths:
 
   /main-page/indexing-status:
     get:
-      summary: get indexing status
+      summary: Check if indexing is finished with indexing ratio
+      description: |
+        Retrieves the current status of blockchain data indexing by the BlockScout instance.
       operationId: get_indexing_status
       responses:
         "200":
-          description: indexing status
+          description: Current blockchain indexing status.
           content:
             application/json:
               schema:
@@ -260,11 +318,14 @@ paths:
 
   /stats:
     get:
-      summary: get stats counters
+      summary: Retrieve blockchain network statistics and metrics
+      description: |
+        Retrieves blockchain network statistics including total blocks, transactions, addresses,
+        average block time, market data, and network utilization.
       operationId: get_stats
       responses:
         "200":
-          description: stats
+          description: Blockchain network statistics.
           content:
             application/json:
               schema:
@@ -272,11 +333,13 @@ paths:
 
   /stats/charts/transactions:
     get:
-      summary: get transactions chart
+      summary: Get daily transaction counts
+      description: |
+        Retrieves time series data of daily transaction counts for rendering charts.
       operationId: get_txs_chart
       responses:
         "200":
-          description: transaction chart
+          description: Time series data for transaction count charts.
           content:
             application/json:
               schema:
@@ -291,11 +354,13 @@ paths:
 
   /stats/charts/market:
     get:
-      summary: get market chart
+      summary: Get daily closing price and market cap for native coin
+      description: |
+        Retrieves time series data of market information (daily closing price, market cap) for rendering charts.
       operationId: get_market_chart
       responses:
         "200":
-          description: market chart
+          description: Time series data for market charts and available token supply.
           content:
             application/json:
               schema:
@@ -314,34 +379,44 @@ paths:
 
   /transactions/{transaction_hash}:
     get:
-      summary: get transaction info
+      summary: Retrieve detailed information about a specific transaction
+      description: |
+        Retrieves detailed information for a specific transaction identified by its hash.
       operationId: get_tx
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
         "200":
-          description: transaction info
+          description: Detailed information about the specified transaction.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Transaction"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /transactions/{transaction_hash}/token-transfers:
     get:
-      summary: get transaction token transfers
+      summary: List token transfers within a specific transaction
+      description: |
+        Retrieves token transfers that occurred within a specific transaction,
+        with optional filtering by token type.
       operationId: get_transaction_token_transfers
       parameters:
         - $ref: "#/components/parameters/transactionHash"
         - in: query
           name: type
+          description: |
+            Filter by token type. Comma-separated list of:
+            * ERC-20 - Fungible tokens
+            * ERC-721 - Non-fungible tokens
+            * ERC-1155 - Multi-token standard
           schema:
             type: string
             example: "ERC-20,ERC-721,ERC-1155" # to return all token types you can just drop `type` from url
       responses:
         "200":
-          description: token transfers
+          description: Token transfers within the specified transaction, with pagination.
           content:
             application/json:
               schema:
@@ -372,16 +447,20 @@ paths:
                   $ref: "#/components/examples/TokenTransferALotOfBatches"
 
         "400":
-          description: bad input parameter
+          description: Bad input parameter
+
   /transactions/{transaction_hash}/internal-transactions:
     get:
-      summary: get transaction internal transactions
+      summary: List internal transactions triggered during a specific transaction
+      description: |
+        Retrieves internal transactions generated during the execution of a specific transaction.
+        Useful for analyzing contract interactions and debugging failed transactions.
       operationId: get_transaction_internal_txs
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
         "200":
-          description: internal transactions
+          description: Internal transactions for the specified transaction, with pagination.
           content:
             application/json:
               schema:
@@ -405,16 +484,20 @@ paths:
                       }
 
         "400":
-          description: bad input parameter
+          description: Bad input parameter
+
   /transactions/{transaction_hash}/logs:
     get:
-      summary: get transaction logs
+      summary: List event logs emitted during a specific transaction
+      description: |
+        Retrieves event logs emitted during the execution of a specific transaction.
+        Logs contain information about contract events and state changes.
       operationId: get_transaction_logs
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
         "200":
-          description: internal transactions
+          description: Event logs for the specified transaction, with pagination.
           content:
             application/json:
               schema:
@@ -432,16 +515,20 @@ paths:
                     example:
                       { "index": 0, "items_count": 50, "block_number": 2 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
+          
   /transactions/{transaction_hash}/raw-trace:
     get:
-      summary: get transaction raw trace
+      summary: Get step-by-step execution trace for a specific transaction
+      description: |
+        Retrieves the raw execution trace for a transaction, showing the step-by-step
+        execution path and all contract interactions.
       operationId: get_transaction_raw_trace
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
         "200":
-          description: raw trace
+          description: Raw execution trace for the specified transaction.
           content:
             application/json:
               schema:
@@ -449,16 +536,19 @@ paths:
                 items:
                   $ref: "#/components/schemas/RawTrace"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
+          
   /transactions/{transaction_hash}/state-changes:
     get:
-      summary: get transaction state changes
+      summary: Get on-chain state changes caused by a specific transaction
+      description: |
+        Retrieves state changes (balance changes, token transfers) caused by a specific transaction.
       operationId: get_transaction_state_changes
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
         "200":
-          description: state changes
+          description: State changes caused by the specified transaction, with pagination.
           content:
             application/json:
               schema:
@@ -475,49 +565,55 @@ paths:
                     type: object
                     example: { "items_count": 1, "state_changes": null }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /transactions/{transaction_hash}/summary:
     get:
-      summary: get human-readable transaction summary
+      summary: Get a human-readable, LLM-based transaction summary
+      description: |
+        Retrieves a human-readable summary of what a transaction did, presented in natural language.
       operationId: get_transaction_summary
       parameters:
         - $ref: "#/components/parameters/transactionHash"
       responses:
         "200":
-          description: human-readable transaction summary
+          description: Human-readable summary of the specified transaction.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/TransactionSummary"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /blocks/{block_number_or_hash}:
     get:
-      summary: get block info
+      summary: Retrieve detailed information about a specific block
+      description: |
+        Retrieves detailed information for a specific block identified by its number or hash.
       operationId: get_block
       parameters:
         - $ref: "#/components/parameters/blockNumberOrHash"
       responses:
         "200":
-          description: block
+          description: Detailed information about the specified block.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Block"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /blocks/{block_number_or_hash}/transactions:
     get:
-      summary: get block transactions
+      summary: List transactions and tx details included in a specific block
+      description: |
+        Retrieves transactions included in a specific block, ordered by transaction index.
       operationId: get_block_txs
       parameters:
         - $ref: "#/components/parameters/blockNumberOrHash"
       responses:
         "200":
-          description: block
+          description: Transactions in the specified block, with pagination.
           content:
             application/json:
               schema:
@@ -539,17 +635,19 @@ paths:
                         "items_count": 50,
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /blocks/{block_number_or_hash}/withdrawals:
     get:
-      summary: get block withdrawals
+      summary: List validator withdrawals including amounts, index and receiver details processed in a specific block
+      description: |
+        Retrieves withdrawals processed in a specific block (typically for proof-of-stake networks).
       operationId: get_block_withdrawals
       parameters:
         - $ref: "#/components/parameters/blockNumberOrHash"
       responses:
         "200":
-          description: block's withdrawals (pay attention that block_number together with timestamp fields is not included to response in this endpoint)
+          description: Withdrawals in the specified block, with pagination. Note that block_number and timestamp fields are not included in this endpoint.
           content:
             application/json:
               schema:
@@ -566,15 +664,17 @@ paths:
                     type: object
                     example: { "index": 1, "items_count": 50 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses:
     get:
-      summary: get native coin holders list
+      summary: List addresses holding native coins sorted by balance - top accounts
+      description: |
+        Retrieves a paginated list of addresses holding the native coin, sorted by balance.
       operationId: get_addresses
       responses:
         "200":
-          description: token
+          description: List of native coin holders with their balances, with pagination.
           content:
             application/json:
               schema:
@@ -587,12 +687,15 @@ paths:
                 properties:
                   exchange_rate:
                     type: string
+                    description: Current exchange rate of the native coin
                     example: "0.01"
                   total_supply:
                     type: string
+                    description: Total supply of the native coin
                     example: "100000000"
                   items:
                     type: array
+                    description: List of addresses with balance information
                     items:
                       $ref: "#/components/schemas/AddressWithTxCount"
                   next_page_params:
@@ -604,53 +707,67 @@ paths:
                         "items_count": 50,
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}:
     get:
-      summary: get address info
+      summary: Retrieve detailed information about a specific address or contract
+      description: |
+        Retrieves detailed information for a specific address, including balance,
+        transaction count, and metadata.
       operationId: get_address
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: address
+          description: Detailed information about the specified address.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Address"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
   /addresses/{address_hash}/counters:
     get:
-      summary: get address counters
+      summary: Get activity count stats for a specific address
+      description: |
+        Retrieves count statistics for an address, including transactions,
+        token transfers, gas usage, and validations.
       operationId: get_address_counters
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: address
+          description: Count statistics for the specified address.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AddressCounters"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/transactions:
     get:
-      summary: get address transactions
+      summary: List transactions involving a specific address with to-from filtering
+      description: |
+        Retrieves transactions involving a specific address, with optional filtering
+        for transactions sent from or to the address.
       operationId: get_address_txs
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: filter
+          description: |
+            Filter transactions by direction:
+            * to - Only show transactions sent to this address
+            * from - Only show transactions sent from this address
+            If omitted, all transactions involving the address are returned.
           schema:
             type: string
             example: "to | from" # it can be 'to', 'from' or empty (or absent)
       responses:
         "200":
-          description: address
+          description: Transactions involving the specified address, with pagination.
           content:
             application/json:
               schema:
@@ -673,32 +790,46 @@ paths:
                       }
 
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/token-transfers:
     get:
-      summary: get address token transfers
+      summary: List token transfers involving a specific address with filtering options
+      description: |
+        Retrieves token transfers involving a specific address, with optional filtering
+        by token type, direction, and specific token.
       operationId: get_address_token_transfers
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: type
+          description: |
+            Filter by token type. Comma-separated list of:
+            * ERC-20 - Fungible tokens
+            * ERC-721 - Non-fungible tokens
+            * ERC-1155 - Multi-token standard
           schema:
             type: string
             example: "ERC-20,ERC-721,ERC-1155" # to return all token types you can just drop `type` from url
         - in: query
           name: filter
+          description: |
+            Filter transfers by direction:
+            * to - Only show transfers to this address
+            * from - Only show transfers from this address
           schema:
             type: string
             example: "to | from" # it can be 'to', 'from' or empty (or absent)
         - in: query
           name: token
+          description: |
+            Filter transfers by specific token contract address.
           schema:
             type: string
             example: "0xb81afe27c103bcd42f4026cf719af6d802928765"
       responses:
         "200":
-          description: address
+          description: Token transfers involving the specified address, with pagination.
           content:
             application/json:
               schema:
@@ -715,22 +846,29 @@ paths:
                     type: object
                     example: { "block_number": 27736955, "index": 4 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/internal-transactions:
     get:
-      summary: get address internal transactions
+      summary: List internal transactions involving a specific address
+      description: |
+        Retrieves internal transactions involving a specific address, with optional
+        filtering for transactions sent from or to the address.
       operationId: get_address_internal_txs
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: filter
+          description: |
+            Filter internal transactions by direction:
+            * to - Only show internal transactions to this address
+            * from - Only show internal transactions from this address
           schema:
             type: string
             example: "to | from" # it can be 'to', 'from' or empty (or absent)
       responses:
         "200":
-          description: address
+          description: Internal transactions involving the specified address, with pagination.
           content:
             application/json:
               schema:
@@ -753,17 +891,19 @@ paths:
                         "transaction_index": 0,
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/logs:
     get:
-      summary: get address logs
+      summary: List event logs emitted by or involving a specific address
+      description: |
+        Retrieves event logs emitted by or involving a specific address.
       operationId: get_address_logs
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: address
+          description: Event logs for the specified address, with pagination.
           content:
             application/json:
               schema:
@@ -785,17 +925,20 @@ paths:
                         "items_count": 50,
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/blocks-validated:
     get:
-      summary: get blocks validated by address
+      summary: List blocks validated (mined) by a specific validator/miner address
+      description: |
+        Retrieves blocks that were validated (mined) by a specific address. Useful for
+        tracking validator/miner performance.
       operationId: get_address_blocks_validated
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: address
+          description: Blocks validated by the specified address, with pagination.
           content:
             application/json:
               schema:
@@ -812,17 +955,20 @@ paths:
                     type: object
                     example: { "block_number": 27736955, "items_count": 50 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/token-balances:
     get:
-      summary: get all tokens balances for the address
+      summary: List all token balances held by a specific address
+      description: |
+        Retrieves all token balances held by a specific address, including ERC-20,
+        ERC-721, and ERC-1155 tokens.
       operationId: get_address_token_balances
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: address
+          description: All token balances for the specified address.
           content:
             application/json:
               schema:
@@ -830,22 +976,30 @@ paths:
                 items:
                   $ref: "#/components/schemas/TokenBalance"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/tokens:
     get:
-      summary: token balances with filtering and pagination
+      summary: List token balances for an address with pagination and type filtering
+      description: |
+        Retrieves token balances for a specific address with pagination and filtering
+        by token type. Useful for displaying large token portfolios.
       operationId: get_address_tokens
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: type
+          description: |
+            Filter by token type. Comma-separated list of:
+            * ERC-20 - Fungible tokens
+            * ERC-721 - Non-fungible tokens
+            * ERC-1155 - Multi-token standard
           schema:
             type: string
             example: "ERC-20,ERC-721,ERC-1155" # to return all token types you can just drop `type` from url
       responses:
         "200":
-          description: address
+          description: Token balances for the specified address with pagination.
           content:
             application/json:
               schema:
@@ -868,16 +1022,20 @@ paths:
                         "value": 14,
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
+
   /addresses/{address_hash}/coin-balance-history:
     get:
-      summary: get address coin balance history
+      summary: Get native coin balance history for an address showing all balance changes
+      description: |
+        Retrieves historical native coin balance changes for a specific address,
+        tracking how an address's balance has changed over time.
       operationId: get_address_coin_balance_history
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: address
+          description: Historical coin balance changes for the specified address, with pagination.
           content:
             application/json:
               schema:
@@ -894,17 +1052,20 @@ paths:
                     type: object
                     example: { "block_number": 27736955, "items_count": 50 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/coin-balance-history-by-day:
     get:
-      summary: get address coin balance history by day
+      summary: Get daily native coin balance snapshots for an address from previous 10 days
+      description: |
+        Retrieves daily snapshots of native coin balance for a specific address.
+        Useful for generating balance-over-time charts.
       operationId: get_address_coin_balance_history_by_day
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: address
+          description: Daily coin balance history for the specified address.
           content:
             application/json:
               schema:
@@ -912,17 +1073,20 @@ paths:
                 items:
                   $ref: "#/components/schemas/CoinBalanceHistoryByDaysEntry"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/withdrawals:
     get:
-      summary: get address withdrawals
+      summary: List validator withdrawals involving a specific address
+      description: |
+        Retrieves withdrawals involving a specific address, typically for
+        proof-of-stake networks supporting validator withdrawals.
       operationId: get_address_withdrawals
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: pay attention that receiver field is not included to response in this endpoint
+          description: Withdrawals for the specified address, with pagination. Note that receiver field is not included in this endpoint.
           content:
             application/json:
               schema:
@@ -939,22 +1103,30 @@ paths:
                     type: object
                     example: { "index": 1, "items_count": 50 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/nft:
     get:
-      summary: get list of NFT owned by address
+      summary: List NFTs owned by a specific address with optional type filtering
+      description: |
+        Retrieves a list of NFTs (non-fungible tokens) owned by a specific address,
+        with optional filtering by token type.
       operationId: get_address_nft
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: type
+          description: |
+            Filter by token type. Comma-separated list of:
+            * ERC-721 - Standard NFT tokens
+            * ERC-404 - Hybrid fungible/non-fungible tokens
+            * ERC-1155 - Multi-token standard
           schema:
             type: string
             example: "ERC-721,ERC-404,ERC-1155" # to return all token types you can just drop `type` from url
       responses:
         "200":
-          description: address
+          description: NFTs owned by the specified address, with pagination.
           content:
             application/json:
               schema:
@@ -976,22 +1148,30 @@ paths:
                         "token_type": "ERC-721",
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /addresses/{address_hash}/nft/collections:
     get:
-      summary: get list of NFT owned by address, grouped by collection
+      summary: List NFTs owned by an address grouped by collection/project
+      description: |
+        Retrieves NFTs owned by a specific address, organized by collection.
+        Useful for displaying an address's NFT portfolio grouped by project.
       operationId: get_address_nft_collections
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: type
+          description: |
+            Filter by token type. Comma-separated list of:
+            * ERC-721 - Standard NFT tokens
+            * ERC-404 - Hybrid fungible/non-fungible tokens
+            * ERC-1155 - Multi-token standard
           schema:
             type: string
             example: "ERC-721,ERC-404,ERC-1155" # to return all token types you can just drop `type` from url
       responses:
         "200":
-          description: address
+          description: NFTs owned by the specified address, grouped by collection, with pagination.
           content:
             application/json:
               schema:
@@ -1012,26 +1192,35 @@ paths:
                         "token_type": "ERC-721",
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens:
     get:
-      summary: get tokens list
+      summary: List tokens with optional filtering by name, symbol, or type
+      description: |
+        Retrieves a paginated list of tokens with optional filtering by name, symbol, or type.
       operationId: get_tokens_list
       parameters:
         - in: query
           name: q
+          description: |
+            Search query to filter tokens by name or symbol.
           schema:
             type: string
             example: "USDT" # token name or symbol
         - in: query
           name: type
+          description: |
+            Filter by token type. Comma-separated list of:
+            * ERC-20 - Fungible tokens
+            * ERC-721 - Non-fungible tokens
+            * ERC-1155 - Multi-token standard
           schema:
             type: string
             example: "ERC-20,ERC-721,ERC-1155" # to return all token types you can just drop `type` from url
       responses:
         "200":
-          description: token
+          description: List of tokens matching the filter criteria, with pagination.
           content:
             application/json:
               schema:
@@ -1056,33 +1245,37 @@ paths:
                         "name": "Tether Gold",
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}:
     get:
-      summary: get token info
+      summary: Retrieve detailed information about a specific token
+      description: |
+        Retrieves detailed information for a specific token identified by its contract address.
       operationId: get_token
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: token
+          description: Detailed information about the specified token.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/TokenInfo"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}/transfers:
     get:
-      summary: get token token transfers
+      summary: List all transfers of a specific token
+      description: |
+        Retrieves transfers of a specific token, identified by its contract address.
       operationId: get_token_token_transfers
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: token
+          description: Transfers of the specified token, with pagination.
           content:
             application/json:
               schema:
@@ -1099,17 +1292,20 @@ paths:
                     type: object
                     example: { "block_number": 27736955, "index": 61 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}/holders:
     get:
-      summary: get token holders
+      summary: List addresses holding a specific token sorted by balance
+      description: |
+        Retrieves addresses holding a specific token, sorted by balance.
+        Useful for analyzing token distribution.
       operationId: get_token_holders
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: token
+          description: Holders of the specified token, with pagination.
           content:
             application/json:
               schema:
@@ -1127,33 +1323,39 @@ paths:
                     example:
                       { "items_count": 2, "value": 789999999999999970440 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}/counters:
     get:
-      summary: get token holders
+      summary: Get holder and transfer count statistics for a specific token
+      description: |
+        Retrieves count statistics for a specific token, including holders count
+        and transfers count.
       operationId: get_token_counters
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: token
+          description: Count statistics for the specified token.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/TokenCounters"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}/instances:
     get:
-      summary: get NFT instances
+      summary: List individual NFT instances for a token contract
+      description: |
+        Retrieves instances of NFTs for a specific token contract.
+        This endpoint is primarily for ERC-721 and ERC-1155 tokens.
       operationId: get_nft_instances
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: token
+          description: NFT instances for the specified token contract, with pagination.
           content:
             application/json:
               schema:
@@ -1170,35 +1372,41 @@ paths:
                     type: object
                     example: { "unique_token": 97464 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}/instances/{id}:
     get:
-      summary: get NFT instance by id
+      summary: Retrieve detailed information about a specific NFT
+      description: |
+        Retrieves detailed information about a specific NFT instance,
+        identified by its token contract address and token ID.
       operationId: get_nft_instance
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - $ref: "#/components/parameters/id"
       responses:
         "200":
-          description: token
+          description: Detailed information about the specified NFT instance.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/NFTInstance"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}/instances/{id}/transfers:
     get:
-      summary: get transfers of NFT instance
+      summary: List ownership transfer history for a specific NFT
+      description: |
+        Retrieves transfer history for a specific NFT instance,
+        showing ownership changes over time.
       operationId: get_nft_instance_transfers
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - $ref: "#/components/parameters/id"
       responses:
         "200":
-          description: token
+          description: Transfer history for the specified NFT instance, with pagination.
           content:
             application/json:
               schema:
@@ -1216,18 +1424,22 @@ paths:
                     example:
                       { "block_number": 27736955, "index": 61, "token_id": 50 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}/instances/{id}/holders:
     get:
-      summary: get token instance holders
+      summary: List current holders of a specific NFT
+      description: |
+        Retrieves current holders of a specific NFT instance.
+        For ERC-721, this will typically be a single address.
+        For ERC-1155, multiple addresses may hold the same token ID.
       operationId: get_token_instance_holders
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - $ref: "#/components/parameters/id"
       responses:
         "200":
-          description: token
+          description: Current holders of the specified NFT instance, with pagination.
           content:
             application/json:
               schema:
@@ -1249,18 +1461,21 @@ paths:
                         "items_count": 50,
                       }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}/instances/{id}/transfers-count:
     get:
-      summary: get transfers count of NFT instance
+      summary: Get total number of ownership transfers for a specific NFT
+      description: |
+        Retrieves the total number of transfers for a specific NFT instance.
+        Useful for determining how frequently an NFT has changed hands.
       operationId: get_nft_instance_transfers_count
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - $ref: "#/components/parameters/id"
       responses:
         "200":
-          description: token
+          description: Total number of transfers for the specified NFT instance.
           content:
             application/json:
               schema:
@@ -1272,17 +1487,20 @@ paths:
                     type: integer
                     example: 10
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /tokens/{address_hash}/instances/{id}/refetch-metadata:
     patch:
-      summary: re-fetch token instance metadata
+      summary: Trigger a refresh of metadata for a specific NFT
+      description: |
+        Triggers a refresh of metadata for a specific NFT instance.
+        Useful when the NFT's metadata has been updated but is not
+        yet reflected in the BlockScout database.
       operationId: refetch_token_instance_metadata
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - $ref: "#/components/parameters/id"
       requestBody:
-        # description:
         required: true
         content:
           application/json:
@@ -1290,7 +1508,7 @@ paths:
               $ref: "#/components/schemas/RecaptchaBody"
       responses:
         "200":
-          description: ok
+          description: Metadata refresh has been successfully initiated.
           content:
             application/json:
               schema:
@@ -1303,7 +1521,7 @@ paths:
                     type: string
                     example: "OK"
         "403":
-          description: Invalid reCAPTCHA response
+          description: Invalid reCAPTCHA response.
           content:
             application/json:
               schema:
@@ -1318,22 +1536,32 @@ paths:
 
   /smart-contracts:
     get:
-      summary: get verified smart contracts
+      summary: List verified smart contracts with optional filtering options
+      description: |
+        Retrieves a paginated list of verified smart contracts with optional
+        filtering by proxy status or programming language.
       operationId: get_smart_contracts
       parameters:
         - in: query
           name: q
+          description: |
+            Search query to filter contracts by name or content.
           schema:
             type: string
             example: "proxy"
         - in: query
           name: filter
+          description: |
+            Filter contracts by programming language:
+            * vyper - Contracts written in Vyper
+            * solidity - Contracts written in Solidity
+            * yul - Contracts written in Yul
           schema:
             type: string
             example: "vyper | solidity | yul"
       responses:
         "200":
-          description: smart contract
+          description: List of verified smart contracts matching the filter criteria, with pagination.
           content:
             application/json:
               schema:
@@ -1350,15 +1578,18 @@ paths:
                     type: object
                     example: { "items_count": 50, "smart_contract_id": 46 }
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /smart-contracts/counters:
     get:
-      summary: get verified smart contracts counters
+      summary: Get count statistics (new & newly verified) for deployed smart contracts
+      description: |
+        Retrieves count statistics for smart contracts, including total contracts,
+        verified contracts, and new contracts in the last 24 hours.
       operationId: get_smart_contracts_counters
       responses:
         "200":
-          description: smart contracts counters
+          description: Count statistics for smart contracts.
           content:
             application/json:
               schema:
@@ -1371,55 +1602,69 @@ paths:
                 properties:
                   new_smart_contracts_24h:
                     type: string
+                    description: Number of new contracts deployed in the last 24 hours
                     example: "12"
                   new_verified_smart_contracts_24h:
                     type: string
+                    description: Number of new verified contracts in the last 24 hours
                     example: "11"
                   smart_contracts:
                     type: string
+                    description: Total number of contracts
                     example: "20"
                   verified_smart_contracts:
                     type: string
+                    description: Total number of verified contracts
                     example: "15"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /smart-contracts/{address_hash}:
     get:
-      summary: get smart contract
+      summary: Retrieve detailed information about a verified smart contract
+      description: |
+        Retrieves detailed information about a specific verified smart contract,
+        including source code, ABI, and deployment details.
       operationId: get_smart_contract
       parameters:
         - $ref: "#/components/parameters/addressHash"
       responses:
         "200":
-          description: smart contract
+          description: Detailed information about the specified verified smart contract.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SmartContract"
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /smart-contracts/{address_hash}/methods-read:
     get:
-      summary: get verified smart-contract read methods
+      summary: List read methods available for a verified smart contract
+      description: |
+        Retrieves read (view/pure) methods available for a verified smart contract,
+        allowing inspection of contract state without gas cost.
       operationId: get_read_methods
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: is_custom_abi
+          description: |
+            Whether to use a custom ABI instead of the verified contract ABI.
           schema:
             type: string
             example: "true"
         - in: query
           name: from
+          description: |
+            Address to use as the caller for the read methods.
           schema:
             type: string
             example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
 
       responses:
         "200":
-          description: smart contract
+          description: Read methods available for the specified verified smart contract.
           content:
             application/json:
               schema:
@@ -1430,27 +1675,34 @@ paths:
                     - $ref: "#/components/schemas/ReadMethodWithoutValue"
 
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /smart-contracts/{address_hash}/methods-read-proxy:
     get:
-      summary: get verified smart-contract read methods proxy
+      summary: List read methods of a proxy contract implementation
+      description: |
+        Retrieves read methods from the implementation contract of a proxy contract.
+        Useful for interacting with upgradeable contracts.
       operationId: get_read_methods_proxy
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: is_custom_abi
+          description: |
+            Whether to use a custom ABI instead of the verified contract ABI.
           schema:
             type: string
             example: "true"
         - in: query
           name: from
+          description: |
+            Address to use as the caller for the read methods.
           schema:
             type: string
             example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
       responses:
         "200":
-          description: smart contract
+          description: Read methods from the implementation contract, accessible through the proxy.
           content:
             application/json:
               schema:
@@ -1462,18 +1714,23 @@ paths:
 
   /smart-contracts/{address_hash}/methods-write:
     get:
-      summary: get verified smart-contract write methods
+      summary: List write methods available for a verified smart contract
+      description: |
+        Retrieves write (non-view/non-pure) methods available for a verified smart contract,
+        which can modify contract state and require gas to execute.
       operationId: get_write_methods
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: is_custom_abi
+          description: |
+            Whether to use a custom ABI instead of the verified contract ABI.
           schema:
             type: string
             example: "true"
       responses:
         "200":
-          description: smart contract
+          description: Write methods available for the specified verified smart contract.
           content:
             application/json:
               schema:
@@ -1481,25 +1738,29 @@ paths:
                 items:
                   oneOf:
                     - $ref: "#/components/schemas/WriteMethod"
-                    # - $ref: '#/components/schemas/ReadMethodWithoutValue'
 
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /smart-contracts/{address_hash}/methods-write-proxy:
     get:
-      summary: get verified smart-contract write methods proxy
+      summary: List write methods of a proxy contract implementation
+      description: |
+        Retrieves write methods from the implementation contract of a proxy contract.
+        Useful for interacting with upgradeable contracts.
       operationId: get_write_methods_proxy
       parameters:
         - $ref: "#/components/parameters/addressHash"
         - in: query
           name: is_custom_abi
+          description: |
+            Whether to use a custom ABI instead of the verified contract ABI.
           schema:
             type: string
             example: "true"
       responses:
         "200":
-          description: smart contract
+          description: Write methods from the implementation contract, accessible through the proxy.
           content:
             application/json:
               schema:
@@ -1507,19 +1768,20 @@ paths:
                 items:
                   oneOf:
                     - $ref: "#/components/schemas/WriteMethod"
-                    # - $ref: '#/components/schemas/ReadMethodWithoutValue'
 
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /smart-contracts/{address_hash}/query-read-method:
     post:
-      summary: query verified smart-contract read method
+      summary: Execute a read method on a smart contract and return the result
+      description: |
+        Executes a read method on a verified smart contract and returns the result.
+        This allows querying contract state without submitting a transaction.
       operationId: query_read_method
       parameters:
         - $ref: "#/components/parameters/addressHash"
       requestBody:
-        # description:
         required: true
         content:
           application/json:
@@ -1527,7 +1789,7 @@ paths:
               $ref: "#/components/schemas/ReadMethodQueryBody"
       responses:
         "200":
-          description: smart contract
+          description: Result of executing the read method on the contract.
           content:
             application/json:
               schema:
@@ -1535,18 +1797,20 @@ paths:
                 items:
                   oneOf:
                     - $ref: "#/components/schemas/ReadMethodResponse"
-                    # - $ref: '#/components/schemas/ReadMethodWithoutValue'
 
         "400":
-          description: bad input parameter
+          description: Bad input parameter
 
   /config/json-rpc-url:
     get:
-      summary: get json rpc url
+      summary: Get the JSON-RPC URL used for indexing the current network
+      description: |
+        Retrieves the JSON-RPC URL for the blockchain network being indexed.
+        This can be used for direct blockchain API calls.
       operationId: get_json_rpc_url
       responses:
         "200":
-          description: json rpc url
+          description: JSON-RPC URL for the blockchain network.
           content:
             application/json:
               schema:
@@ -1556,15 +1820,19 @@ paths:
                 properties:
                   json_rpc_url:
                     type: string
+                    description: URL for JSON-RPC API calls to the blockchain
                     example: "https://core.poa.network"
 
   /withdrawals:
     get:
-      summary: get withdrawals
+      summary: List validator withdrawal details on proof-of-stake networks
+      description: |
+        Retrieves a paginated list of withdrawals, typically for proof-of-stake
+        networks supporting validator withdrawals.
       operationId: get_withdrawals
       responses:
         "200":
-          description: withdrawals
+          description: List of withdrawals with pagination.
           content:
             application/json:
               schema:
@@ -1583,17 +1851,20 @@ paths:
   
   /proxy/account-abstraction/status:
     get:
-      summary: get account abstraction indexing status
+      summary: Get indexing status for account abstraction (ERC-4337) transactions
+      description: |
+        Retrieves the current status of account abstraction indexing,
+        including whether or not indexing is enabled and live.
       operationId: get_account_abstraction_status
       responses:
         "200":
-          description: A successful response.
+          description: Current account abstraction indexing status.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/v1IndexerStatus"
         "500":
-          description: unexpected error
+          description: Unexpected error
 
 components:
   parameters:
@@ -3438,7 +3709,7 @@ components:
         total_blocks:
           type: string
           example: "508700"
-        total_addresses:
+        total_:
           type: string
           example: "982340"
         total_transactions:
