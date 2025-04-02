@@ -3177,6 +3177,9 @@ components:
         language:
           type: string
           example: "solidity | vyper | yul"
+        status:
+          type: string
+          example: "selfdestructed | failed | success"
 
     ExternalLibrary:
       required:
