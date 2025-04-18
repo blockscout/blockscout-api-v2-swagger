@@ -29,10 +29,11 @@
         "recaptcha",
         "remappings",
         "Resteaking",
+        "selfdestructed",
         "sourcify",
         "subtraces",
         "userdoc",
-        "xdai",
-        "watchlist"
+        "watchlist",
+        "xdai"
     ]
 }
