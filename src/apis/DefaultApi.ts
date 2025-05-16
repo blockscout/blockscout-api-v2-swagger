@@ -23,6 +23,8 @@ import type {
   GetAddressCoinBalanceHistory200Response,
   GetAddressInternalTxs200Response,
   GetAddressLogs200Response,
+  GetAddressNft200Response,
+  GetAddressNftCollections200Response,
   GetAddressTokenTransfers200Response,
   GetAddressTokens200Response,
   GetAddressTxs200Response,
@@ -30,9 +32,8 @@ import type {
   GetBlockTxs200Response,
   GetBlockWithdrawals200Response,
   GetBlocks200Response,
-  GetInternalTxs200Response,
+  GetInternalTransactions200Response,
   GetJsonRpcUrl200Response,
-  GetLogs200Response,
   GetMarketChart200Response,
   GetNftInstanceTransfers200Response,
   GetNftInstanceTransfersCount200Response,
@@ -44,11 +45,17 @@ import type {
   GetTokenTokenTransfers200Response,
   GetTokenTransfers200Response,
   GetTokensList200Response,
+  GetTransactionInternalTxs200Response,
+  GetTransactionLogs200Response,
+  GetTransactionTokenTransfers200Response,
   GetTxs200Response,
   GetTxsChart200Response,
   IndexingStatus,
   NFTInstance,
   RawTrace,
+  RecaptchaBody,
+  RefetchTokenInstanceMetadata200Response,
+  RefetchTokenInstanceMetadata403Response,
   Search200Response,
   SearchResultRedirect,
   SmartContract,
@@ -57,6 +64,8 @@ import type {
   TokenCounters,
   TokenInfo,
   Transaction,
+  TransactionSummary,
+  V1IndexerStatus,
 } from '../models/index';
 import {
     AddressFromJSON,
@@ -75,6 +84,10 @@ import {
     GetAddressInternalTxs200ResponseToJSON,
     GetAddressLogs200ResponseFromJSON,
     GetAddressLogs200ResponseToJSON,
+    GetAddressNft200ResponseFromJSON,
+    GetAddressNft200ResponseToJSON,
+    GetAddressNftCollections200ResponseFromJSON,
+    GetAddressNftCollections200ResponseToJSON,
     GetAddressTokenTransfers200ResponseFromJSON,
     GetAddressTokenTransfers200ResponseToJSON,
     GetAddressTokens200ResponseFromJSON,
@@ -89,12 +102,10 @@ import {
     GetBlockWithdrawals200ResponseToJSON,
     GetBlocks200ResponseFromJSON,
     GetBlocks200ResponseToJSON,
-    GetInternalTxs200ResponseFromJSON,
-    GetInternalTxs200ResponseToJSON,
+    GetInternalTransactions200ResponseFromJSON,
+    GetInternalTransactions200ResponseToJSON,
     GetJsonRpcUrl200ResponseFromJSON,
     GetJsonRpcUrl200ResponseToJSON,
-    GetLogs200ResponseFromJSON,
-    GetLogs200ResponseToJSON,
     GetMarketChart200ResponseFromJSON,
     GetMarketChart200ResponseToJSON,
     GetNftInstanceTransfers200ResponseFromJSON,
@@ -117,6 +128,12 @@ import {
     GetTokenTransfers200ResponseToJSON,
     GetTokensList200ResponseFromJSON,
     GetTokensList200ResponseToJSON,
+    GetTransactionInternalTxs200ResponseFromJSON,
+    GetTransactionInternalTxs200ResponseToJSON,
+    GetTransactionLogs200ResponseFromJSON,
+    GetTransactionLogs200ResponseToJSON,
+    GetTransactionTokenTransfers200ResponseFromJSON,
+    GetTransactionTokenTransfers200ResponseToJSON,
     GetTxs200ResponseFromJSON,
     GetTxs200ResponseToJSON,
     GetTxsChart200ResponseFromJSON,
@@ -127,6 +144,12 @@ import {
     NFTInstanceToJSON,
     RawTraceFromJSON,
     RawTraceToJSON,
+    RecaptchaBodyFromJSON,
+    RecaptchaBodyToJSON,
+    RefetchTokenInstanceMetadata200ResponseFromJSON,
+    RefetchTokenInstanceMetadata200ResponseToJSON,
+    RefetchTokenInstanceMetadata403ResponseFromJSON,
+    RefetchTokenInstanceMetadata403ResponseToJSON,
     Search200ResponseFromJSON,
     Search200ResponseToJSON,
     SearchResultRedirectFromJSON,
@@ -143,6 +166,10 @@ import {
     TokenInfoToJSON,
     TransactionFromJSON,
     TransactionToJSON,
+    TransactionSummaryFromJSON,
+    TransactionSummaryToJSON,
+    V1IndexerStatusFromJSON,
+    V1IndexerStatusToJSON,
 } from '../models/index';
 
 export interface GetAddressRequest {
@@ -174,6 +201,16 @@ export interface GetAddressLogsRequest {
     addressHash: string;
 }
 
+export interface GetAddressNftRequest {
+    addressHash: string;
+    type?: string;
+}
+
+export interface GetAddressNftCollectionsRequest {
+    addressHash: string;
+    type?: string;
+}
+
 export interface GetAddressTokenBalancesRequest {
     addressHash: string;
 }
@@ -193,7 +230,7 @@ export interface GetAddressTokensRequest {
 export interface GetAddressTxsRequest {
     addressHash: string;
     filter?: string;
-    blockNumber?: string;
+    blockNumber?: number;
     fee?: string;
     hash?: string;
     index?: number;
@@ -222,14 +259,6 @@ export interface GetBlocksRequest {
     type?: string;
 }
 
-export interface GetInternalTxsRequest {
-    transactionHash: string;
-}
-
-export interface GetLogsRequest {
-    transactionHash: string;
-}
-
 export interface GetNftInstanceRequest {
     addressHash: string;
     id: number;
@@ -247,10 +276,6 @@ export interface GetNftInstanceTransfersCountRequest {
 
 export interface GetNftInstancesRequest {
     addressHash: string;
-}
-
-export interface GetRawTraceRequest {
-    transactionHash: string;
 }
 
 export interface GetSmartContractRequest {
@@ -283,13 +308,29 @@ export interface GetTokenTokenTransfersRequest {
     addressHash: string;
 }
 
-export interface GetTokenTransfersRequest {
-    transactionHash: string;
+export interface GetTokensListRequest {
+    q?: string;
     type?: string;
 }
 
-export interface GetTokensListRequest {
-    q?: string;
+export interface GetTransactionInternalTxsRequest {
+    transactionHash: string;
+}
+
+export interface GetTransactionLogsRequest {
+    transactionHash: string;
+}
+
+export interface GetTransactionRawTraceRequest {
+    transactionHash: string;
+}
+
+export interface GetTransactionSummaryRequest {
+    transactionHash: string;
+}
+
+export interface GetTransactionTokenTransfersRequest {
+    transactionHash: string;
     type?: string;
 }
 
@@ -301,6 +342,12 @@ export interface GetTxsRequest {
     filter?: string;
     type?: string;
     method?: string;
+}
+
+export interface RefetchTokenInstanceMetadataRequest {
+    addressHash: string;
+    id: number;
+    recaptchaBody: RecaptchaBody;
 }
 
 export interface SearchRequest {
@@ -318,6 +365,20 @@ export interface SearchRedirectRequest {
  * @interface DefaultApiInterface
  */
 export interface DefaultApiInterface {
+    /**
+     * 
+     * @summary get account abstraction indexing status
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getAccountAbstractionStatusRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1IndexerStatus>>;
+
+    /**
+     * get account abstraction indexing status
+     */
+    getAccountAbstractionStatus(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1IndexerStatus>;
+
     /**
      * 
      * @summary get address info
@@ -395,7 +456,7 @@ export interface DefaultApiInterface {
 
     /**
      * 
-     * @summary get address internal txs
+     * @summary get address internal transactions
      * @param {string} addressHash Address hash
      * @param {string} [filter] 
      * @param {*} [options] Override http request option.
@@ -405,7 +466,7 @@ export interface DefaultApiInterface {
     getAddressInternalTxsRaw(requestParameters: GetAddressInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressInternalTxs200Response>>;
 
     /**
-     * get address internal txs
+     * get address internal transactions
      */
     getAddressInternalTxs(requestParameters: GetAddressInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressInternalTxs200Response>;
 
@@ -423,6 +484,38 @@ export interface DefaultApiInterface {
      * get address logs
      */
     getAddressLogs(requestParameters: GetAddressLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressLogs200Response>;
+
+    /**
+     * 
+     * @summary get list of NFT owned by address
+     * @param {string} addressHash Address hash
+     * @param {string} [type] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getAddressNftRaw(requestParameters: GetAddressNftRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressNft200Response>>;
+
+    /**
+     * get list of NFT owned by address
+     */
+    getAddressNft(requestParameters: GetAddressNftRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressNft200Response>;
+
+    /**
+     * 
+     * @summary get list of NFT owned by address, grouped by collection
+     * @param {string} addressHash Address hash
+     * @param {string} [type] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getAddressNftCollectionsRaw(requestParameters: GetAddressNftCollectionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressNftCollections200Response>>;
+
+    /**
+     * get list of NFT owned by address, grouped by collection
+     */
+    getAddressNftCollections(requestParameters: GetAddressNftCollectionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressNftCollections200Response>;
 
     /**
      * 
@@ -475,10 +568,10 @@ export interface DefaultApiInterface {
 
     /**
      * 
-     * @summary get address txs
+     * @summary get address transactions
      * @param {string} addressHash Address hash
      * @param {string} [filter] 
-     * @param {string} [blockNumber] 
+     * @param {number} [blockNumber] 
      * @param {string} [fee] 
      * @param {string} [hash] 
      * @param {number} [index] 
@@ -492,7 +585,7 @@ export interface DefaultApiInterface {
     getAddressTxsRaw(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressTxs200Response>>;
 
     /**
-     * get address txs
+     * get address transactions
      */
     getAddressTxs(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressTxs200Response>;
 
@@ -542,7 +635,7 @@ export interface DefaultApiInterface {
 
     /**
      * 
-     * @summary get block txs
+     * @summary get block transactions
      * @param {string} blockNumberOrHash Block number or hash
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -551,7 +644,7 @@ export interface DefaultApiInterface {
     getBlockTxsRaw(requestParameters: GetBlockTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetBlockTxs200Response>>;
 
     /**
-     * get block txs
+     * get block transactions
      */
     getBlockTxs(requestParameters: GetBlockTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetBlockTxs200Response>;
 
@@ -601,18 +694,17 @@ export interface DefaultApiInterface {
 
     /**
      * 
-     * @summary get internal txs
-     * @param {string} transactionHash Transaction hash
+     * @summary get internal transactions
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
      */
-    getInternalTxsRaw(requestParameters: GetInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetInternalTxs200Response>>;
+    getInternalTransactionsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetInternalTransactions200Response>>;
 
     /**
-     * get internal txs
+     * get internal transactions
      */
-    getInternalTxs(requestParameters: GetInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetInternalTxs200Response>;
+    getInternalTransactions(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetInternalTransactions200Response>;
 
     /**
      * 
@@ -630,21 +722,6 @@ export interface DefaultApiInterface {
 
     /**
      * 
-     * @summary get logs
-     * @param {string} transactionHash Transaction hash
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    getLogsRaw(requestParameters: GetLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLogs200Response>>;
-
-    /**
-     * get logs
-     */
-    getLogs(requestParameters: GetLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLogs200Response>;
-
-    /**
-     * 
      * @summary get main page blocks
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -659,7 +736,7 @@ export interface DefaultApiInterface {
 
     /**
      * 
-     * @summary get main page txs
+     * @summary get main page transactions
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
@@ -667,7 +744,7 @@ export interface DefaultApiInterface {
     getMainPageTxsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Transaction>>>;
 
     /**
-     * get main page txs
+     * get main page transactions
      */
     getMainPageTxs(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Transaction>>;
 
@@ -747,21 +824,6 @@ export interface DefaultApiInterface {
      * get NFT instances
      */
     getNftInstances(requestParameters: GetNftInstancesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetNftInstances200Response>;
-
-    /**
-     * 
-     * @summary get raw trace
-     * @param {string} transactionHash Transaction hash
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    getRawTraceRaw(requestParameters: GetRawTraceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RawTrace>>>;
-
-    /**
-     * get raw trace
-     */
-    getRawTrace(requestParameters: GetRawTraceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RawTrace>>;
 
     /**
      * 
@@ -901,18 +963,16 @@ export interface DefaultApiInterface {
     /**
      * 
      * @summary get token transfers
-     * @param {string} transactionHash Transaction hash
-     * @param {string} [type] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
      */
-    getTokenTransfersRaw(requestParameters: GetTokenTransfersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTokenTransfers200Response>>;
+    getTokenTransfersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTokenTransfers200Response>>;
 
     /**
      * get token transfers
      */
-    getTokenTransfers(requestParameters: GetTokenTransfersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTokenTransfers200Response>;
+    getTokenTransfers(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTokenTransfers200Response>;
 
     /**
      * 
@@ -932,7 +992,83 @@ export interface DefaultApiInterface {
 
     /**
      * 
-     * @summary get tx info
+     * @summary get transaction internal transactions
+     * @param {string} transactionHash Transaction hash
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getTransactionInternalTxsRaw(requestParameters: GetTransactionInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTransactionInternalTxs200Response>>;
+
+    /**
+     * get transaction internal transactions
+     */
+    getTransactionInternalTxs(requestParameters: GetTransactionInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTransactionInternalTxs200Response>;
+
+    /**
+     * 
+     * @summary get transaction logs
+     * @param {string} transactionHash Transaction hash
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getTransactionLogsRaw(requestParameters: GetTransactionLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTransactionLogs200Response>>;
+
+    /**
+     * get transaction logs
+     */
+    getTransactionLogs(requestParameters: GetTransactionLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTransactionLogs200Response>;
+
+    /**
+     * 
+     * @summary get transaction raw trace
+     * @param {string} transactionHash Transaction hash
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getTransactionRawTraceRaw(requestParameters: GetTransactionRawTraceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RawTrace>>>;
+
+    /**
+     * get transaction raw trace
+     */
+    getTransactionRawTrace(requestParameters: GetTransactionRawTraceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RawTrace>>;
+
+    /**
+     * 
+     * @summary get human-readable transaction summary
+     * @param {string} transactionHash Transaction hash
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getTransactionSummaryRaw(requestParameters: GetTransactionSummaryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TransactionSummary>>;
+
+    /**
+     * get human-readable transaction summary
+     */
+    getTransactionSummary(requestParameters: GetTransactionSummaryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TransactionSummary>;
+
+    /**
+     * 
+     * @summary get transaction token transfers
+     * @param {string} transactionHash Transaction hash
+     * @param {string} [type] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getTransactionTokenTransfersRaw(requestParameters: GetTransactionTokenTransfersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTransactionTokenTransfers200Response>>;
+
+    /**
+     * get transaction token transfers
+     */
+    getTransactionTokenTransfers(requestParameters: GetTransactionTokenTransfersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTransactionTokenTransfers200Response>;
+
+    /**
+     * 
+     * @summary get transaction info
      * @param {string} transactionHash Transaction hash
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -941,13 +1077,13 @@ export interface DefaultApiInterface {
     getTxRaw(requestParameters: GetTxRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Transaction>>;
 
     /**
-     * get tx info
+     * get transaction info
      */
     getTx(requestParameters: GetTxRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Transaction>;
 
     /**
      * 
-     * @summary get txs
+     * @summary get transactions
      * @param {string} [filter] 
      * @param {string} [type] 
      * @param {string} [method] 
@@ -958,13 +1094,13 @@ export interface DefaultApiInterface {
     getTxsRaw(requestParameters: GetTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTxs200Response>>;
 
     /**
-     * get txs
+     * get transactions
      */
     getTxs(requestParameters: GetTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTxs200Response>;
 
     /**
      * 
-     * @summary get txs chart
+     * @summary get transactions chart
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApiInterface
@@ -972,7 +1108,7 @@ export interface DefaultApiInterface {
     getTxsChartRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTxsChart200Response>>;
 
     /**
-     * get txs chart
+     * get transactions chart
      */
     getTxsChart(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTxsChart200Response>;
 
@@ -989,6 +1125,23 @@ export interface DefaultApiInterface {
      * get withdrawals
      */
     getWithdrawals(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetBlockWithdrawals200Response>;
+
+    /**
+     * 
+     * @summary re-fetch token instance metadata
+     * @param {string} addressHash Address hash
+     * @param {number} id integer id
+     * @param {RecaptchaBody} recaptchaBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    refetchTokenInstanceMetadataRaw(requestParameters: RefetchTokenInstanceMetadataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RefetchTokenInstanceMetadata200Response>>;
+
+    /**
+     * re-fetch token instance metadata
+     */
+    refetchTokenInstanceMetadata(requestParameters: RefetchTokenInstanceMetadataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RefetchTokenInstanceMetadata200Response>;
 
     /**
      * 
@@ -1026,6 +1179,32 @@ export interface DefaultApiInterface {
  * 
  */
 export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
+
+    /**
+     * get account abstraction indexing status
+     */
+    async getAccountAbstractionStatusRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1IndexerStatus>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/proxy/account-abstraction/status`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => V1IndexerStatusFromJSON(jsonValue));
+    }
+
+    /**
+     * get account abstraction indexing status
+     */
+    async getAccountAbstractionStatus(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1IndexerStatus> {
+        const response = await this.getAccountAbstractionStatusRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      * get address info
@@ -1193,7 +1372,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get address internal txs
+     * get address internal transactions
      */
     async getAddressInternalTxsRaw(requestParameters: GetAddressInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressInternalTxs200Response>> {
         if (requestParameters['addressHash'] == null) {
@@ -1222,7 +1401,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get address internal txs
+     * get address internal transactions
      */
     async getAddressInternalTxs(requestParameters: GetAddressInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressInternalTxs200Response> {
         const response = await this.getAddressInternalTxsRaw(requestParameters, initOverrides);
@@ -1259,6 +1438,80 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
      */
     async getAddressLogs(requestParameters: GetAddressLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressLogs200Response> {
         const response = await this.getAddressLogsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * get list of NFT owned by address
+     */
+    async getAddressNftRaw(requestParameters: GetAddressNftRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressNft200Response>> {
+        if (requestParameters['addressHash'] == null) {
+            throw new runtime.RequiredError(
+                'addressHash',
+                'Required parameter "addressHash" was null or undefined when calling getAddressNft().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['type'] != null) {
+            queryParameters['type'] = requestParameters['type'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/addresses/{address_hash}/nft`.replace(`{${"address_hash"}}`, encodeURIComponent(String(requestParameters['addressHash']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAddressNft200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * get list of NFT owned by address
+     */
+    async getAddressNft(requestParameters: GetAddressNftRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressNft200Response> {
+        const response = await this.getAddressNftRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * get list of NFT owned by address, grouped by collection
+     */
+    async getAddressNftCollectionsRaw(requestParameters: GetAddressNftCollectionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressNftCollections200Response>> {
+        if (requestParameters['addressHash'] == null) {
+            throw new runtime.RequiredError(
+                'addressHash',
+                'Required parameter "addressHash" was null or undefined when calling getAddressNftCollections().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['type'] != null) {
+            queryParameters['type'] = requestParameters['type'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/addresses/{address_hash}/nft/collections`.replace(`{${"address_hash"}}`, encodeURIComponent(String(requestParameters['addressHash']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAddressNftCollections200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * get list of NFT owned by address, grouped by collection
+     */
+    async getAddressNftCollections(requestParameters: GetAddressNftCollectionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressNftCollections200Response> {
+        const response = await this.getAddressNftCollectionsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -1378,7 +1631,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get address txs
+     * get address transactions
      */
     async getAddressTxsRaw(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAddressTxs200Response>> {
         if (requestParameters['addressHash'] == null) {
@@ -1435,7 +1688,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get address txs
+     * get address transactions
      */
     async getAddressTxs(requestParameters: GetAddressTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAddressTxs200Response> {
         const response = await this.getAddressTxsRaw(requestParameters, initOverrides);
@@ -1535,7 +1788,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get block txs
+     * get block transactions
      */
     async getBlockTxsRaw(requestParameters: GetBlockTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetBlockTxs200Response>> {
         if (requestParameters['blockNumberOrHash'] == null) {
@@ -1560,7 +1813,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get block txs
+     * get block transactions
      */
     async getBlockTxs(requestParameters: GetBlockTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetBlockTxs200Response> {
         const response = await this.getBlockTxsRaw(requestParameters, initOverrides);
@@ -1657,35 +1910,28 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get internal txs
+     * get internal transactions
      */
-    async getInternalTxsRaw(requestParameters: GetInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetInternalTxs200Response>> {
-        if (requestParameters['transactionHash'] == null) {
-            throw new runtime.RequiredError(
-                'transactionHash',
-                'Required parameter "transactionHash" was null or undefined when calling getInternalTxs().'
-            );
-        }
-
+    async getInternalTransactionsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetInternalTransactions200Response>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/transactions/{transaction_hash}/internal-transactions`.replace(`{${"transaction_hash"}}`, encodeURIComponent(String(requestParameters['transactionHash']))),
+            path: `/internal-transactions`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetInternalTxs200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetInternalTransactions200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * get internal txs
+     * get internal transactions
      */
-    async getInternalTxs(requestParameters: GetInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetInternalTxs200Response> {
-        const response = await this.getInternalTxsRaw(requestParameters, initOverrides);
+    async getInternalTransactions(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetInternalTransactions200Response> {
+        const response = await this.getInternalTransactionsRaw(initOverrides);
         return await response.value();
     }
 
@@ -1716,39 +1962,6 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get logs
-     */
-    async getLogsRaw(requestParameters: GetLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLogs200Response>> {
-        if (requestParameters['transactionHash'] == null) {
-            throw new runtime.RequiredError(
-                'transactionHash',
-                'Required parameter "transactionHash" was null or undefined when calling getLogs().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/transactions/{transaction_hash}/logs`.replace(`{${"transaction_hash"}}`, encodeURIComponent(String(requestParameters['transactionHash']))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetLogs200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * get logs
-     */
-    async getLogs(requestParameters: GetLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLogs200Response> {
-        const response = await this.getLogsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * get main page blocks
      */
     async getMainPageTokensRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Block>>> {
@@ -1775,7 +1988,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get main page txs
+     * get main page transactions
      */
     async getMainPageTxsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Transaction>>> {
         const queryParameters: any = {};
@@ -1793,7 +2006,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get main page txs
+     * get main page transactions
      */
     async getMainPageTxs(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Transaction>> {
         const response = await this.getMainPageTxsRaw(initOverrides);
@@ -1976,39 +2189,6 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
      */
     async getNftInstances(requestParameters: GetNftInstancesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetNftInstances200Response> {
         const response = await this.getNftInstancesRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * get raw trace
-     */
-    async getRawTraceRaw(requestParameters: GetRawTraceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RawTrace>>> {
-        if (requestParameters['transactionHash'] == null) {
-            throw new runtime.RequiredError(
-                'transactionHash',
-                'Required parameter "transactionHash" was null or undefined when calling getRawTrace().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/transactions/{transaction_hash}/raw-trace`.replace(`{${"transaction_hash"}}`, encodeURIComponent(String(requestParameters['transactionHash']))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RawTraceFromJSON));
-    }
-
-    /**
-     * get raw trace
-     */
-    async getRawTrace(requestParameters: GetRawTraceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RawTrace>> {
-        const response = await this.getRawTraceRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -2306,24 +2486,13 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * get token transfers
      */
-    async getTokenTransfersRaw(requestParameters: GetTokenTransfersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTokenTransfers200Response>> {
-        if (requestParameters['transactionHash'] == null) {
-            throw new runtime.RequiredError(
-                'transactionHash',
-                'Required parameter "transactionHash" was null or undefined when calling getTokenTransfers().'
-            );
-        }
-
+    async getTokenTransfersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTokenTransfers200Response>> {
         const queryParameters: any = {};
-
-        if (requestParameters['type'] != null) {
-            queryParameters['type'] = requestParameters['type'];
-        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/transactions/{transaction_hash}/token-transfers`.replace(`{${"transaction_hash"}}`, encodeURIComponent(String(requestParameters['transactionHash']))),
+            path: `/token-transfers`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -2335,8 +2504,8 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     /**
      * get token transfers
      */
-    async getTokenTransfers(requestParameters: GetTokenTransfersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTokenTransfers200Response> {
-        const response = await this.getTokenTransfersRaw(requestParameters, initOverrides);
+    async getTokenTransfers(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTokenTransfers200Response> {
+        const response = await this.getTokenTransfersRaw(initOverrides);
         return await response.value();
     }
 
@@ -2375,7 +2544,176 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get tx info
+     * get transaction internal transactions
+     */
+    async getTransactionInternalTxsRaw(requestParameters: GetTransactionInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTransactionInternalTxs200Response>> {
+        if (requestParameters['transactionHash'] == null) {
+            throw new runtime.RequiredError(
+                'transactionHash',
+                'Required parameter "transactionHash" was null or undefined when calling getTransactionInternalTxs().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/transactions/{transaction_hash}/internal-transactions`.replace(`{${"transaction_hash"}}`, encodeURIComponent(String(requestParameters['transactionHash']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetTransactionInternalTxs200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * get transaction internal transactions
+     */
+    async getTransactionInternalTxs(requestParameters: GetTransactionInternalTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTransactionInternalTxs200Response> {
+        const response = await this.getTransactionInternalTxsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * get transaction logs
+     */
+    async getTransactionLogsRaw(requestParameters: GetTransactionLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTransactionLogs200Response>> {
+        if (requestParameters['transactionHash'] == null) {
+            throw new runtime.RequiredError(
+                'transactionHash',
+                'Required parameter "transactionHash" was null or undefined when calling getTransactionLogs().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/transactions/{transaction_hash}/logs`.replace(`{${"transaction_hash"}}`, encodeURIComponent(String(requestParameters['transactionHash']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetTransactionLogs200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * get transaction logs
+     */
+    async getTransactionLogs(requestParameters: GetTransactionLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTransactionLogs200Response> {
+        const response = await this.getTransactionLogsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * get transaction raw trace
+     */
+    async getTransactionRawTraceRaw(requestParameters: GetTransactionRawTraceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RawTrace>>> {
+        if (requestParameters['transactionHash'] == null) {
+            throw new runtime.RequiredError(
+                'transactionHash',
+                'Required parameter "transactionHash" was null or undefined when calling getTransactionRawTrace().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/transactions/{transaction_hash}/raw-trace`.replace(`{${"transaction_hash"}}`, encodeURIComponent(String(requestParameters['transactionHash']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RawTraceFromJSON));
+    }
+
+    /**
+     * get transaction raw trace
+     */
+    async getTransactionRawTrace(requestParameters: GetTransactionRawTraceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RawTrace>> {
+        const response = await this.getTransactionRawTraceRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * get human-readable transaction summary
+     */
+    async getTransactionSummaryRaw(requestParameters: GetTransactionSummaryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TransactionSummary>> {
+        if (requestParameters['transactionHash'] == null) {
+            throw new runtime.RequiredError(
+                'transactionHash',
+                'Required parameter "transactionHash" was null or undefined when calling getTransactionSummary().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/transactions/{transaction_hash}/summary`.replace(`{${"transaction_hash"}}`, encodeURIComponent(String(requestParameters['transactionHash']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionSummaryFromJSON(jsonValue));
+    }
+
+    /**
+     * get human-readable transaction summary
+     */
+    async getTransactionSummary(requestParameters: GetTransactionSummaryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TransactionSummary> {
+        const response = await this.getTransactionSummaryRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * get transaction token transfers
+     */
+    async getTransactionTokenTransfersRaw(requestParameters: GetTransactionTokenTransfersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTransactionTokenTransfers200Response>> {
+        if (requestParameters['transactionHash'] == null) {
+            throw new runtime.RequiredError(
+                'transactionHash',
+                'Required parameter "transactionHash" was null or undefined when calling getTransactionTokenTransfers().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['type'] != null) {
+            queryParameters['type'] = requestParameters['type'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/transactions/{transaction_hash}/token-transfers`.replace(`{${"transaction_hash"}}`, encodeURIComponent(String(requestParameters['transactionHash']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetTransactionTokenTransfers200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * get transaction token transfers
+     */
+    async getTransactionTokenTransfers(requestParameters: GetTransactionTokenTransfersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTransactionTokenTransfers200Response> {
+        const response = await this.getTransactionTokenTransfersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * get transaction info
      */
     async getTxRaw(requestParameters: GetTxRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Transaction>> {
         if (requestParameters['transactionHash'] == null) {
@@ -2400,7 +2738,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get tx info
+     * get transaction info
      */
     async getTx(requestParameters: GetTxRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Transaction> {
         const response = await this.getTxRaw(requestParameters, initOverrides);
@@ -2408,7 +2746,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get txs
+     * get transactions
      */
     async getTxsRaw(requestParameters: GetTxsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTxs200Response>> {
         const queryParameters: any = {};
@@ -2438,7 +2776,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get txs
+     * get transactions
      */
     async getTxs(requestParameters: GetTxsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTxs200Response> {
         const response = await this.getTxsRaw(requestParameters, initOverrides);
@@ -2446,7 +2784,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get txs chart
+     * get transactions chart
      */
     async getTxsChartRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTxsChart200Response>> {
         const queryParameters: any = {};
@@ -2464,7 +2802,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
     }
 
     /**
-     * get txs chart
+     * get transactions chart
      */
     async getTxsChart(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTxsChart200Response> {
         const response = await this.getTxsChartRaw(initOverrides);
@@ -2494,6 +2832,56 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
      */
     async getWithdrawals(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetBlockWithdrawals200Response> {
         const response = await this.getWithdrawalsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * re-fetch token instance metadata
+     */
+    async refetchTokenInstanceMetadataRaw(requestParameters: RefetchTokenInstanceMetadataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RefetchTokenInstanceMetadata200Response>> {
+        if (requestParameters['addressHash'] == null) {
+            throw new runtime.RequiredError(
+                'addressHash',
+                'Required parameter "addressHash" was null or undefined when calling refetchTokenInstanceMetadata().'
+            );
+        }
+
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling refetchTokenInstanceMetadata().'
+            );
+        }
+
+        if (requestParameters['recaptchaBody'] == null) {
+            throw new runtime.RequiredError(
+                'recaptchaBody',
+                'Required parameter "recaptchaBody" was null or undefined when calling refetchTokenInstanceMetadata().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/tokens/{address_hash}/instances/{id}/refetch-metadata`.replace(`{${"address_hash"}}`, encodeURIComponent(String(requestParameters['addressHash']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RecaptchaBodyToJSON(requestParameters['recaptchaBody']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RefetchTokenInstanceMetadata200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * re-fetch token instance metadata
+     */
+    async refetchTokenInstanceMetadata(requestParameters: RefetchTokenInstanceMetadataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RefetchTokenInstanceMetadata200Response> {
+        const response = await this.refetchTokenInstanceMetadataRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

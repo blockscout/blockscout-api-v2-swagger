@@ -30,7 +30,7 @@ export interface SearchResultTransaction {
      * @type {string}
      * @memberof SearchResultTransaction
      */
-    txHash: string;
+    transactionHash: string;
     /**
      * 
      * @type {string}
@@ -50,7 +50,7 @@ export interface SearchResultTransaction {
  */
 export function instanceOfSearchResultTransaction(value: object): boolean {
     if (!('timestamp' in value)) return false;
-    if (!('txHash' in value)) return false;
+    if (!('transactionHash' in value)) return false;
     if (!('type' in value)) return false;
     if (!('url' in value)) return false;
     return true;
@@ -67,7 +67,7 @@ export function SearchResultTransactionFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'timestamp': json['timestamp'],
-        'txHash': json['tx_hash'],
+        'transactionHash': json['transaction_hash'],
         'type': json['type'],
         'url': json['url'],
     };
@@ -80,7 +80,7 @@ export function SearchResultTransactionToJSON(value?: SearchResultTransaction | 
     return {
         
         'timestamp': value['timestamp'],
-        'tx_hash': value['txHash'],
+        'transaction_hash': value['transactionHash'],
         'type': value['type'],
         'url': value['url'],
     };

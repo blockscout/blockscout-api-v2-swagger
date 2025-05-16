@@ -19,12 +19,6 @@ import {
     AddressParamFromJSONTyped,
     AddressParamToJSON,
 } from './AddressParam';
-import type { TokenInfo } from './TokenInfo';
-import {
-    TokenInfoFromJSON,
-    TokenInfoFromJSONTyped,
-    TokenInfoToJSON,
-} from './TokenInfo';
 
 /**
  * 
@@ -50,12 +44,6 @@ export interface Holder {
      * @memberof Holder
      */
     tokenId?: string;
-    /**
-     * 
-     * @type {TokenInfo}
-     * @memberof Holder
-     */
-    token: TokenInfo;
 }
 
 /**
@@ -64,7 +52,6 @@ export interface Holder {
 export function instanceOfHolder(value: object): boolean {
     if (!('address' in value)) return false;
     if (!('value' in value)) return false;
-    if (!('token' in value)) return false;
     return true;
 }
 
@@ -81,7 +68,6 @@ export function HolderFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ho
         'address': AddressParamFromJSON(json['address']),
         'value': json['value'],
         'tokenId': json['token_id'] == null ? undefined : json['token_id'],
-        'token': TokenInfoFromJSON(json['token']),
     };
 }
 
@@ -94,7 +80,6 @@ export function HolderToJSON(value?: Holder | null): any {
         'address': AddressParamToJSON(value['address']),
         'value': value['value'],
         'token_id': value['tokenId'],
-        'token': TokenInfoToJSON(value['token']),
     };
 }
 

@@ -49,7 +49,7 @@ export interface Address {
      * @type {string}
      * @memberof Address
      */
-    creationTxHash?: string;
+    creationTransactionHash?: string;
     /**
      * 
      * @type {TokenInfo}
@@ -139,49 +139,7 @@ export interface Address {
      * @type {boolean}
      * @memberof Address
      */
-    hasCustomMethodsRead?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Address
-     */
-    hasCustomMethodsWrite?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Address
-     */
-    hasDecompiledCode?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Address
-     */
     hasLogs?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Address
-     */
-    hasMethodsRead?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Address
-     */
-    hasMethodsWrite?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Address
-     */
-    hasMethodsReadProxy?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Address
-     */
-    hasMethodsWriteProxy?: boolean;
     /**
      * 
      * @type {boolean}
@@ -221,7 +179,7 @@ export function AddressFromJSONTyped(json: any, ignoreDiscriminator: boolean): A
     return {
         
         'creatorAddressHash': json['creator_address_hash'] == null ? undefined : json['creator_address_hash'],
-        'creationTxHash': json['creation_tx_hash'] == null ? undefined : json['creation_tx_hash'],
+        'creationTransactionHash': json['creation_transaction_hash'] == null ? undefined : json['creation_transaction_hash'],
         'token': json['token'] == null ? undefined : TokenInfoFromJSON(json['token']),
         'coinBalance': json['coin_balance'] == null ? undefined : json['coin_balance'],
         'exchangeRate': json['exchange_rate'] == null ? undefined : json['exchange_rate'],
@@ -236,14 +194,7 @@ export function AddressFromJSONTyped(json: any, ignoreDiscriminator: boolean): A
         'publicTags': json['public_tags'] == null ? undefined : ((json['public_tags'] as Array<any>).map(AddressTagFromJSON)),
         'isVerified': json['is_verified'] == null ? undefined : json['is_verified'],
         'hasBeaconChainWithdrawals': json['has_beacon_chain_withdrawals'] == null ? undefined : json['has_beacon_chain_withdrawals'],
-        'hasCustomMethodsRead': json['has_custom_methods_read'] == null ? undefined : json['has_custom_methods_read'],
-        'hasCustomMethodsWrite': json['has_custom_methods_write'] == null ? undefined : json['has_custom_methods_write'],
-        'hasDecompiledCode': json['has_decompiled_code'] == null ? undefined : json['has_decompiled_code'],
         'hasLogs': json['has_logs'] == null ? undefined : json['has_logs'],
-        'hasMethodsRead': json['has_methods_read'] == null ? undefined : json['has_methods_read'],
-        'hasMethodsWrite': json['has_methods_write'] == null ? undefined : json['has_methods_write'],
-        'hasMethodsReadProxy': json['has_methods_read_proxy'] == null ? undefined : json['has_methods_read_proxy'],
-        'hasMethodsWriteProxy': json['has_methods_write_proxy'] == null ? undefined : json['has_methods_write_proxy'],
         'hasTokenTransfers': json['has_token_transfers'] == null ? undefined : json['has_token_transfers'],
         'hasTokens': json['has_tokens'] == null ? undefined : json['has_tokens'],
         'hasValidatedBlocks': json['has_validated_blocks'] == null ? undefined : json['has_validated_blocks'],
@@ -257,7 +208,7 @@ export function AddressToJSON(value?: Address | null): any {
     return {
         
         'creator_address_hash': value['creatorAddressHash'],
-        'creation_tx_hash': value['creationTxHash'],
+        'creation_transaction_hash': value['creationTransactionHash'],
         'token': TokenInfoToJSON(value['token']),
         'coin_balance': value['coinBalance'],
         'exchange_rate': value['exchangeRate'],
@@ -272,14 +223,7 @@ export function AddressToJSON(value?: Address | null): any {
         'public_tags': value['publicTags'] == null ? undefined : ((value['publicTags'] as Array<any>).map(AddressTagToJSON)),
         'is_verified': value['isVerified'],
         'has_beacon_chain_withdrawals': value['hasBeaconChainWithdrawals'],
-        'has_custom_methods_read': value['hasCustomMethodsRead'],
-        'has_custom_methods_write': value['hasCustomMethodsWrite'],
-        'has_decompiled_code': value['hasDecompiledCode'],
         'has_logs': value['hasLogs'],
-        'has_methods_read': value['hasMethodsRead'],
-        'has_methods_write': value['hasMethodsWrite'],
-        'has_methods_read_proxy': value['hasMethodsReadProxy'],
-        'has_methods_write_proxy': value['hasMethodsWriteProxy'],
         'has_token_transfers': value['hasTokenTransfers'],
         'has_tokens': value['hasTokens'],
         'has_validated_blocks': value['hasValidatedBlocks'],

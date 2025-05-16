@@ -67,7 +67,7 @@ export interface SmartContractForList {
      * @type {number}
      * @memberof SmartContractForList
      */
-    txCount: number;
+    transactionCount?: number;
     /**
      * 
      * @type {string}
@@ -92,7 +92,6 @@ export function instanceOfSmartContractForList(value: object): boolean {
     if (!('language' in value)) return false;
     if (!('hasConstructorArgs' in value)) return false;
     if (!('optimizationEnabled' in value)) return false;
-    if (!('txCount' in value)) return false;
     if (!('verifiedAt' in value)) return false;
     return true;
 }
@@ -113,7 +112,7 @@ export function SmartContractForListFromJSONTyped(json: any, ignoreDiscriminator
         'language': json['language'],
         'hasConstructorArgs': json['has_constructor_args'],
         'optimizationEnabled': json['optimization_enabled'],
-        'txCount': json['tx_count'],
+        'transactionCount': json['transaction_count'] == null ? undefined : json['transaction_count'],
         'verifiedAt': json['verified_at'],
         'marketCap': json['market_cap'] == null ? undefined : json['market_cap'],
     };
@@ -131,7 +130,7 @@ export function SmartContractForListToJSON(value?: SmartContractForList | null):
         'language': value['language'],
         'has_constructor_args': value['hasConstructorArgs'],
         'optimization_enabled': value['optimizationEnabled'],
-        'tx_count': value['txCount'],
+        'transaction_count': value['transactionCount'],
         'verified_at': value['verifiedAt'],
         'market_cap': value['marketCap'],
     };

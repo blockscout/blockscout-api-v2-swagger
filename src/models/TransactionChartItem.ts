@@ -30,7 +30,7 @@ export interface TransactionChartItem {
      * @type {number}
      * @memberof TransactionChartItem
      */
-    txCount: number;
+    transactionCount: number;
 }
 
 /**
@@ -38,7 +38,7 @@ export interface TransactionChartItem {
  */
 export function instanceOfTransactionChartItem(value: object): boolean {
     if (!('date' in value)) return false;
-    if (!('txCount' in value)) return false;
+    if (!('transactionCount' in value)) return false;
     return true;
 }
 
@@ -53,7 +53,7 @@ export function TransactionChartItemFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'date': json['date'],
-        'txCount': json['tx_count'],
+        'transactionCount': json['transaction_count'],
     };
 }
 
@@ -64,7 +64,7 @@ export function TransactionChartItemToJSON(value?: TransactionChartItem | null):
     return {
         
         'date': value['date'],
-        'tx_count': value['txCount'],
+        'transaction_count': value['transactionCount'],
     };
 }
 

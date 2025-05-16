@@ -49,7 +49,7 @@ export interface AddressWithTxCount {
      * @type {string}
      * @memberof AddressWithTxCount
      */
-    creationTxHash?: string;
+    creationTransactionHash?: string;
     /**
      * 
      * @type {TokenInfo}
@@ -139,49 +139,7 @@ export interface AddressWithTxCount {
      * @type {boolean}
      * @memberof AddressWithTxCount
      */
-    hasCustomMethodsRead?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AddressWithTxCount
-     */
-    hasCustomMethodsWrite?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AddressWithTxCount
-     */
-    hasDecompiledCode?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AddressWithTxCount
-     */
     hasLogs?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AddressWithTxCount
-     */
-    hasMethodsRead?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AddressWithTxCount
-     */
-    hasMethodsWrite?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AddressWithTxCount
-     */
-    hasMethodsReadProxy?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AddressWithTxCount
-     */
-    hasMethodsWriteProxy?: boolean;
     /**
      * 
      * @type {boolean}
@@ -205,7 +163,7 @@ export interface AddressWithTxCount {
      * @type {string}
      * @memberof AddressWithTxCount
      */
-    txCount: string;
+    transactionCount: string;
 }
 
 /**
@@ -213,7 +171,7 @@ export interface AddressWithTxCount {
  */
 export function instanceOfAddressWithTxCount(value: object): boolean {
     if (!('hash' in value)) return false;
-    if (!('txCount' in value)) return false;
+    if (!('transactionCount' in value)) return false;
     return true;
 }
 
@@ -228,7 +186,7 @@ export function AddressWithTxCountFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'creatorAddressHash': json['creator_address_hash'] == null ? undefined : json['creator_address_hash'],
-        'creationTxHash': json['creation_tx_hash'] == null ? undefined : json['creation_tx_hash'],
+        'creationTransactionHash': json['creation_transaction_hash'] == null ? undefined : json['creation_transaction_hash'],
         'token': json['token'] == null ? undefined : TokenInfoFromJSON(json['token']),
         'coinBalance': json['coin_balance'] == null ? undefined : json['coin_balance'],
         'exchangeRate': json['exchange_rate'] == null ? undefined : json['exchange_rate'],
@@ -243,18 +201,11 @@ export function AddressWithTxCountFromJSONTyped(json: any, ignoreDiscriminator: 
         'publicTags': json['public_tags'] == null ? undefined : ((json['public_tags'] as Array<any>).map(AddressTagFromJSON)),
         'isVerified': json['is_verified'] == null ? undefined : json['is_verified'],
         'hasBeaconChainWithdrawals': json['has_beacon_chain_withdrawals'] == null ? undefined : json['has_beacon_chain_withdrawals'],
-        'hasCustomMethodsRead': json['has_custom_methods_read'] == null ? undefined : json['has_custom_methods_read'],
-        'hasCustomMethodsWrite': json['has_custom_methods_write'] == null ? undefined : json['has_custom_methods_write'],
-        'hasDecompiledCode': json['has_decompiled_code'] == null ? undefined : json['has_decompiled_code'],
         'hasLogs': json['has_logs'] == null ? undefined : json['has_logs'],
-        'hasMethodsRead': json['has_methods_read'] == null ? undefined : json['has_methods_read'],
-        'hasMethodsWrite': json['has_methods_write'] == null ? undefined : json['has_methods_write'],
-        'hasMethodsReadProxy': json['has_methods_read_proxy'] == null ? undefined : json['has_methods_read_proxy'],
-        'hasMethodsWriteProxy': json['has_methods_write_proxy'] == null ? undefined : json['has_methods_write_proxy'],
         'hasTokenTransfers': json['has_token_transfers'] == null ? undefined : json['has_token_transfers'],
         'hasTokens': json['has_tokens'] == null ? undefined : json['has_tokens'],
         'hasValidatedBlocks': json['has_validated_blocks'] == null ? undefined : json['has_validated_blocks'],
-        'txCount': json['tx_count'],
+        'transactionCount': json['transaction_count'],
     };
 }
 
@@ -265,7 +216,7 @@ export function AddressWithTxCountToJSON(value?: AddressWithTxCount | null): any
     return {
         
         'creator_address_hash': value['creatorAddressHash'],
-        'creation_tx_hash': value['creationTxHash'],
+        'creation_transaction_hash': value['creationTransactionHash'],
         'token': TokenInfoToJSON(value['token']),
         'coin_balance': value['coinBalance'],
         'exchange_rate': value['exchangeRate'],
@@ -280,18 +231,11 @@ export function AddressWithTxCountToJSON(value?: AddressWithTxCount | null): any
         'public_tags': value['publicTags'] == null ? undefined : ((value['publicTags'] as Array<any>).map(AddressTagToJSON)),
         'is_verified': value['isVerified'],
         'has_beacon_chain_withdrawals': value['hasBeaconChainWithdrawals'],
-        'has_custom_methods_read': value['hasCustomMethodsRead'],
-        'has_custom_methods_write': value['hasCustomMethodsWrite'],
-        'has_decompiled_code': value['hasDecompiledCode'],
         'has_logs': value['hasLogs'],
-        'has_methods_read': value['hasMethodsRead'],
-        'has_methods_write': value['hasMethodsWrite'],
-        'has_methods_read_proxy': value['hasMethodsReadProxy'],
-        'has_methods_write_proxy': value['hasMethodsWriteProxy'],
         'has_token_transfers': value['hasTokenTransfers'],
         'has_tokens': value['hasTokens'],
         'has_validated_blocks': value['hasValidatedBlocks'],
-        'tx_count': value['txCount'],
+        'transaction_count': value['transactionCount'],
     };
 }
 

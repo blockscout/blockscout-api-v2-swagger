@@ -42,7 +42,7 @@ export interface IndexingStatus {
      * @type {string}
      * @memberof IndexingStatus
      */
-    indexedInternalTransactionsRatio: string;
+    indexedInternalTransactionsRatio: string | null;
 }
 
 /**

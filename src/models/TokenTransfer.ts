@@ -52,22 +52,22 @@ export interface TokenTransfer {
     from: AddressParam;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof TokenTransfer
      */
-    logIndex: string;
+    logIndex: number;
     /**
      * 
      * @type {string}
      * @memberof TokenTransfer
      */
-    method: string;
+    method?: string;
     /**
      * 
      * @type {string}
      * @memberof TokenTransfer
      */
-    timestamp: string;
+    timestamp?: string;
     /**
      * 
      * @type {AddressParam}
@@ -91,7 +91,7 @@ export interface TokenTransfer {
      * @type {string}
      * @memberof TokenTransfer
      */
-    txHash: string;
+    transactionHash: string;
     /**
      * 
      * @type {string}
@@ -107,12 +107,10 @@ export function instanceOfTokenTransfer(value: object): boolean {
     if (!('blockHash' in value)) return false;
     if (!('from' in value)) return false;
     if (!('logIndex' in value)) return false;
-    if (!('method' in value)) return false;
-    if (!('timestamp' in value)) return false;
     if (!('to' in value)) return false;
     if (!('token' in value)) return false;
     if (!('total' in value)) return false;
-    if (!('txHash' in value)) return false;
+    if (!('transactionHash' in value)) return false;
     if (!('type' in value)) return false;
     return true;
 }
@@ -130,12 +128,12 @@ export function TokenTransferFromJSONTyped(json: any, ignoreDiscriminator: boole
         'blockHash': json['block_hash'],
         'from': AddressParamFromJSON(json['from']),
         'logIndex': json['log_index'],
-        'method': json['method'],
-        'timestamp': json['timestamp'],
+        'method': json['method'] == null ? undefined : json['method'],
+        'timestamp': json['timestamp'] == null ? undefined : json['timestamp'],
         'to': AddressParamFromJSON(json['to']),
         'token': TokenInfoFromJSON(json['token']),
         'total': TokenTransferTotalFromJSON(json['total']),
-        'txHash': json['tx_hash'],
+        'transactionHash': json['transaction_hash'],
         'type': json['type'],
     };
 }
@@ -154,7 +152,7 @@ export function TokenTransferToJSON(value?: TokenTransfer | null): any {
         'to': AddressParamToJSON(value['to']),
         'token': TokenInfoToJSON(value['token']),
         'total': TokenTransferTotalToJSON(value['total']),
-        'tx_hash': value['txHash'],
+        'transaction_hash': value['transactionHash'],
         'type': value['type'],
     };
 }

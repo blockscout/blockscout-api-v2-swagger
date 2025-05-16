@@ -23,37 +23,37 @@ import {
 /**
  * 
  * @export
- * @interface GetInternalTxs200Response
+ * @interface GetInternalTransactions200Response
  */
-export interface GetInternalTxs200Response {
+export interface GetInternalTransactions200Response {
     /**
      * 
      * @type {Array<InternalTransaction>}
-     * @memberof GetInternalTxs200Response
+     * @memberof GetInternalTransactions200Response
      */
     items: Array<InternalTransaction>;
     /**
      * 
      * @type {object}
-     * @memberof GetInternalTxs200Response
+     * @memberof GetInternalTransactions200Response
      */
     nextPageParams: object;
 }
 
 /**
- * Check if a given object implements the GetInternalTxs200Response interface.
+ * Check if a given object implements the GetInternalTransactions200Response interface.
  */
-export function instanceOfGetInternalTxs200Response(value: object): boolean {
+export function instanceOfGetInternalTransactions200Response(value: object): boolean {
     if (!('items' in value)) return false;
     if (!('nextPageParams' in value)) return false;
     return true;
 }
 
-export function GetInternalTxs200ResponseFromJSON(json: any): GetInternalTxs200Response {
-    return GetInternalTxs200ResponseFromJSONTyped(json, false);
+export function GetInternalTransactions200ResponseFromJSON(json: any): GetInternalTransactions200Response {
+    return GetInternalTransactions200ResponseFromJSONTyped(json, false);
 }
 
-export function GetInternalTxs200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetInternalTxs200Response {
+export function GetInternalTransactions200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetInternalTransactions200Response {
     if (json == null) {
         return json;
     }
@@ -64,7 +64,7 @@ export function GetInternalTxs200ResponseFromJSONTyped(json: any, ignoreDiscrimi
     };
 }
 
-export function GetInternalTxs200ResponseToJSON(value?: GetInternalTxs200Response | null): any {
+export function GetInternalTransactions200ResponseToJSON(value?: GetInternalTransactions200Response | null): any {
     if (value == null) {
         return value;
     }

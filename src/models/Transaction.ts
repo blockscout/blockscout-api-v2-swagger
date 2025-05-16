@@ -73,7 +73,7 @@ export interface Transaction {
      * @type {number}
      * @memberof Transaction
      */
-    block: number;
+    blockNumber: number;
     /**
      * 
      * @type {string}
@@ -115,7 +115,7 @@ export interface Transaction {
      * @type {string}
      * @memberof Transaction
      */
-    txBurntFee: string;
+    transactionBurntFee: string;
     /**
      * 
      * @type {string}
@@ -163,13 +163,13 @@ export interface Transaction {
      * @type {Array<TokenTransfer>}
      * @memberof Transaction
      */
-    tokenTransfers?: Array<TokenTransfer>;
+    tokenTransfers: Array<TokenTransfer>;
     /**
      * 
      * @type {Array<string>}
      * @memberof Transaction
      */
-    txTypes: Array<string>;
+    transactionTypes: Array<string>;
     /**
      * 
      * @type {string}
@@ -199,7 +199,7 @@ export interface Transaction {
      * @type {boolean}
      * @memberof Transaction
      */
-    hasErrorInInternalTxs: boolean;
+    hasErrorInInternalTransactions: boolean;
     /**
      * 
      * @type {Array<TransactionAction>}
@@ -253,7 +253,7 @@ export interface Transaction {
      * @type {string}
      * @memberof Transaction
      */
-    txTag: string;
+    transactionTag: string;
 }
 
 /**
@@ -263,14 +263,14 @@ export function instanceOfTransaction(value: object): boolean {
     if (!('timestamp' in value)) return false;
     if (!('fee' in value)) return false;
     if (!('gasLimit' in value)) return false;
-    if (!('block' in value)) return false;
+    if (!('blockNumber' in value)) return false;
     if (!('status' in value)) return false;
     if (!('method' in value)) return false;
     if (!('confirmations' in value)) return false;
     if (!('type' in value)) return false;
     if (!('exchangeRate' in value)) return false;
     if (!('to' in value)) return false;
-    if (!('txBurntFee' in value)) return false;
+    if (!('transactionBurntFee' in value)) return false;
     if (!('maxFeePerGas' in value)) return false;
     if (!('result' in value)) return false;
     if (!('hash' in value)) return false;
@@ -278,12 +278,13 @@ export function instanceOfTransaction(value: object): boolean {
     if (!('priorityFee' in value)) return false;
     if (!('baseFeePerGas' in value)) return false;
     if (!('from' in value)) return false;
-    if (!('txTypes' in value)) return false;
+    if (!('tokenTransfers' in value)) return false;
+    if (!('transactionTypes' in value)) return false;
     if (!('gasUsed' in value)) return false;
     if (!('createdContract' in value)) return false;
     if (!('position' in value)) return false;
     if (!('nonce' in value)) return false;
-    if (!('hasErrorInInternalTxs' in value)) return false;
+    if (!('hasErrorInInternalTransactions' in value)) return false;
     if (!('actions' in value)) return false;
     if (!('decodedInput' in value)) return false;
     if (!('tokenTransfersOverflow' in value)) return false;
@@ -292,7 +293,7 @@ export function instanceOfTransaction(value: object): boolean {
     if (!('maxPriorityFeePerGas' in value)) return false;
     if (!('revertReason' in value)) return false;
     if (!('confirmationDuration' in value)) return false;
-    if (!('txTag' in value)) return false;
+    if (!('transactionTag' in value)) return false;
     return true;
 }
 
@@ -309,14 +310,14 @@ export function TransactionFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'timestamp': json['timestamp'],
         'fee': FeeFromJSON(json['fee']),
         'gasLimit': json['gas_limit'],
-        'block': json['block'],
+        'blockNumber': json['block_number'],
         'status': json['status'],
         'method': json['method'],
         'confirmations': json['confirmations'],
         'type': json['type'],
         'exchangeRate': json['exchange_rate'],
         'to': AddressParamFromJSON(json['to']),
-        'txBurntFee': json['tx_burnt_fee'],
+        'transactionBurntFee': json['transaction_burnt_fee'],
         'maxFeePerGas': json['max_fee_per_gas'],
         'result': json['result'],
         'hash': json['hash'],
@@ -324,13 +325,13 @@ export function TransactionFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'priorityFee': json['priority_fee'],
         'baseFeePerGas': json['base_fee_per_gas'],
         'from': AddressParamFromJSON(json['from']),
-        'tokenTransfers': json['token_transfers'] == null ? undefined : ((json['token_transfers'] as Array<any>).map(TokenTransferFromJSON)),
-        'txTypes': json['tx_types'],
+        'tokenTransfers': ((json['token_transfers'] as Array<any>).map(TokenTransferFromJSON)),
+        'transactionTypes': json['transaction_types'],
         'gasUsed': json['gas_used'],
         'createdContract': AddressParamFromJSON(json['created_contract']),
         'position': json['position'],
         'nonce': json['nonce'],
-        'hasErrorInInternalTxs': json['has_error_in_internal_txs'],
+        'hasErrorInInternalTransactions': json['has_error_in_internal_transactions'],
         'actions': ((json['actions'] as Array<any>).map(TransactionActionFromJSON)),
         'decodedInput': DecodedInputFromJSON(json['decoded_input']),
         'tokenTransfersOverflow': json['token_transfers_overflow'],
@@ -339,7 +340,7 @@ export function TransactionFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'maxPriorityFeePerGas': json['max_priority_fee_per_gas'],
         'revertReason': json['revert_reason'],
         'confirmationDuration': json['confirmation_duration'],
-        'txTag': json['tx_tag'],
+        'transactionTag': json['transaction_tag'],
     };
 }
 
@@ -352,14 +353,14 @@ export function TransactionToJSON(value?: Transaction | null): any {
         'timestamp': value['timestamp'],
         'fee': FeeToJSON(value['fee']),
         'gas_limit': value['gasLimit'],
-        'block': value['block'],
+        'block_number': value['blockNumber'],
         'status': value['status'],
         'method': value['method'],
         'confirmations': value['confirmations'],
         'type': value['type'],
         'exchange_rate': value['exchangeRate'],
         'to': AddressParamToJSON(value['to']),
-        'tx_burnt_fee': value['txBurntFee'],
+        'transaction_burnt_fee': value['transactionBurntFee'],
         'max_fee_per_gas': value['maxFeePerGas'],
         'result': value['result'],
         'hash': value['hash'],
@@ -367,13 +368,13 @@ export function TransactionToJSON(value?: Transaction | null): any {
         'priority_fee': value['priorityFee'],
         'base_fee_per_gas': value['baseFeePerGas'],
         'from': AddressParamToJSON(value['from']),
-        'token_transfers': value['tokenTransfers'] == null ? undefined : ((value['tokenTransfers'] as Array<any>).map(TokenTransferToJSON)),
-        'tx_types': value['txTypes'],
+        'token_transfers': ((value['tokenTransfers'] as Array<any>).map(TokenTransferToJSON)),
+        'transaction_types': value['transactionTypes'],
         'gas_used': value['gasUsed'],
         'created_contract': AddressParamToJSON(value['createdContract']),
         'position': value['position'],
         'nonce': value['nonce'],
-        'has_error_in_internal_txs': value['hasErrorInInternalTxs'],
+        'has_error_in_internal_transactions': value['hasErrorInInternalTransactions'],
         'actions': ((value['actions'] as Array<any>).map(TransactionActionToJSON)),
         'decoded_input': DecodedInputToJSON(value['decodedInput']),
         'token_transfers_overflow': value['tokenTransfersOverflow'],
@@ -382,7 +383,7 @@ export function TransactionToJSON(value?: Transaction | null): any {
         'max_priority_fee_per_gas': value['maxPriorityFeePerGas'],
         'revert_reason': value['revertReason'],
         'confirmation_duration': value['confirmationDuration'],
-        'tx_tag': value['txTag'],
+        'transaction_tag': value['transactionTag'],
     };
 }
 

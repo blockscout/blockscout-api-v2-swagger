@@ -13,13 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { GasPrice } from './GasPrice';
-import {
-    GasPriceFromJSON,
-    GasPriceFromJSONTyped,
-    GasPriceToJSON,
-} from './GasPrice';
-
 /**
  * 
  * @export
@@ -58,12 +51,6 @@ export interface StatsResponse {
     coinPrice: string;
     /**
      * 
-     * @type {number}
-     * @memberof StatsResponse
-     */
-    coinPriceChangePercentage?: number;
-    /**
-     * 
      * @type {string}
      * @memberof StatsResponse
      */
@@ -82,16 +69,10 @@ export interface StatsResponse {
     gasUsedToday: string;
     /**
      * 
-     * @type {GasPrice}
+     * @type {object}
      * @memberof StatsResponse
      */
-    gasPrices: GasPrice;
-    /**
-     * 
-     * @type {string}
-     * @memberof StatsResponse
-     */
-    gasPriceUpdatedAt?: string;
+    gasPrices: object;
     /**
      * 
      * @type {string}
@@ -146,12 +127,10 @@ export function StatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'totalTransactions': json['total_transactions'],
         'averageBlockTime': json['average_block_time'],
         'coinPrice': json['coin_price'],
-        'coinPriceChangePercentage': json['coin_price_change_percentage'] == null ? undefined : json['coin_price_change_percentage'],
         'totalGasUsed': json['total_gas_used'],
         'transactionsToday': json['transactions_today'],
         'gasUsedToday': json['gas_used_today'],
-        'gasPrices': GasPriceFromJSON(json['gas_prices']),
-        'gasPriceUpdatedAt': json['gas_price_updated_at'] == null ? undefined : json['gas_price_updated_at'],
+        'gasPrices': json['gas_prices'],
         'staticGasPrice': json['static_gas_price'],
         'marketCap': json['market_cap'],
         'networkUtilizationPercentage': json['network_utilization_percentage'],
@@ -169,12 +148,10 @@ export function StatsResponseToJSON(value?: StatsResponse | null): any {
         'total_transactions': value['totalTransactions'],
         'average_block_time': value['averageBlockTime'],
         'coin_price': value['coinPrice'],
-        'coin_price_change_percentage': value['coinPriceChangePercentage'],
         'total_gas_used': value['totalGasUsed'],
         'transactions_today': value['transactionsToday'],
         'gas_used_today': value['gasUsedToday'],
-        'gas_prices': GasPriceToJSON(value['gasPrices']),
-        'gas_price_updated_at': value['gasPriceUpdatedAt'],
+        'gas_prices': value['gasPrices'],
         'static_gas_price': value['staticGasPrice'],
         'market_cap': value['marketCap'],
         'network_utilization_percentage': value['networkUtilizationPercentage'],

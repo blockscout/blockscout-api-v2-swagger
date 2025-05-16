@@ -85,7 +85,7 @@ export interface Log {
      * @type {string}
      * @memberof Log
      */
-    txHash: string;
+    transactionHash: string;
 }
 
 /**
@@ -98,7 +98,7 @@ export function instanceOfLog(value: object): boolean {
     if (!('index' in value)) return false;
     if (!('smartContract' in value)) return false;
     if (!('topics' in value)) return false;
-    if (!('txHash' in value)) return false;
+    if (!('transactionHash' in value)) return false;
     return true;
 }
 
@@ -120,7 +120,7 @@ export function LogFromJSONTyped(json: any, ignoreDiscriminator: boolean): Log {
         'index': json['index'],
         'smartContract': AddressParamFromJSON(json['smart_contract']),
         'topics': json['topics'],
-        'txHash': json['tx_hash'],
+        'transactionHash': json['transaction_hash'],
     };
 }
 
@@ -138,7 +138,7 @@ export function LogToJSON(value?: Log | null): any {
         'index': value['index'],
         'smart_contract': AddressParamToJSON(value['smartContract']),
         'topics': value['topics'],
-        'tx_hash': value['txHash'],
+        'transaction_hash': value['transactionHash'],
     };
 }
 

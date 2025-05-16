@@ -29,91 +29,85 @@ import {
 /**
  * 
  * @export
- * @interface AddressParam
+ * @interface TokenAddressParam
  */
-export interface AddressParam {
+export interface TokenAddressParam {
     /**
      * 
      * @type {string}
-     * @memberof AddressParam
+     * @memberof TokenAddressParam
      */
     hash: string;
     /**
      * 
      * @type {string}
-     * @memberof AddressParam
+     * @memberof TokenAddressParam
      */
     implementationName: string;
     /**
      * 
      * @type {string}
-     * @memberof AddressParam
+     * @memberof TokenAddressParam
      */
     name: string;
     /**
      * 
-     * @type {string}
-     * @memberof AddressParam
-     */
-    ensDomainName?: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof AddressParam
-     */
-    metadata?: object;
-    /**
-     * 
      * @type {boolean}
-     * @memberof AddressParam
+     * @memberof TokenAddressParam
      */
     isContract: boolean;
     /**
      * 
+     * @type {boolean}
+     * @memberof TokenAddressParam
+     */
+    isVerified: boolean;
+    /**
+     * 
      * @type {Array<AddressTag>}
-     * @memberof AddressParam
+     * @memberof TokenAddressParam
      */
     privateTags: Array<AddressTag>;
     /**
      * 
-     * @type {Array<WatchlistName>}
-     * @memberof AddressParam
-     */
-    watchlistNames: Array<WatchlistName>;
-    /**
-     * 
      * @type {Array<AddressTag>}
-     * @memberof AddressParam
+     * @memberof TokenAddressParam
      */
     publicTags: Array<AddressTag>;
     /**
      * 
-     * @type {boolean}
-     * @memberof AddressParam
+     * @type {Array<WatchlistName>}
+     * @memberof TokenAddressParam
      */
-    isVerified: boolean;
+    watchlistNames: Array<WatchlistName>;
+    /**
+     * Address
+     * @type {string}
+     * @memberof TokenAddressParam
+     */
+    address?: string;
 }
 
 /**
- * Check if a given object implements the AddressParam interface.
+ * Check if a given object implements the TokenAddressParam interface.
  */
-export function instanceOfAddressParam(value: object): boolean {
+export function instanceOfTokenAddressParam(value: object): boolean {
     if (!('hash' in value)) return false;
     if (!('implementationName' in value)) return false;
     if (!('name' in value)) return false;
     if (!('isContract' in value)) return false;
-    if (!('privateTags' in value)) return false;
-    if (!('watchlistNames' in value)) return false;
-    if (!('publicTags' in value)) return false;
     if (!('isVerified' in value)) return false;
+    if (!('privateTags' in value)) return false;
+    if (!('publicTags' in value)) return false;
+    if (!('watchlistNames' in value)) return false;
     return true;
 }
 
-export function AddressParamFromJSON(json: any): AddressParam {
-    return AddressParamFromJSONTyped(json, false);
+export function TokenAddressParamFromJSON(json: any): TokenAddressParam {
+    return TokenAddressParamFromJSONTyped(json, false);
 }
 
-export function AddressParamFromJSONTyped(json: any, ignoreDiscriminator: boolean): AddressParam {
+export function TokenAddressParamFromJSONTyped(json: any, ignoreDiscriminator: boolean): TokenAddressParam {
     if (json == null) {
         return json;
     }
@@ -122,17 +116,16 @@ export function AddressParamFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'hash': json['hash'],
         'implementationName': json['implementation_name'],
         'name': json['name'],
-        'ensDomainName': json['ens_domain_name'] == null ? undefined : json['ens_domain_name'],
-        'metadata': json['metadata'] == null ? undefined : json['metadata'],
         'isContract': json['is_contract'],
-        'privateTags': ((json['private_tags'] as Array<any>).map(AddressTagFromJSON)),
-        'watchlistNames': ((json['watchlist_names'] as Array<any>).map(WatchlistNameFromJSON)),
-        'publicTags': ((json['public_tags'] as Array<any>).map(AddressTagFromJSON)),
         'isVerified': json['is_verified'],
+        'privateTags': ((json['private_tags'] as Array<any>).map(AddressTagFromJSON)),
+        'publicTags': ((json['public_tags'] as Array<any>).map(AddressTagFromJSON)),
+        'watchlistNames': ((json['watchlist_names'] as Array<any>).map(WatchlistNameFromJSON)),
+        'address': json['address'] == null ? undefined : json['address'],
     };
 }
 
-export function AddressParamToJSON(value?: AddressParam | null): any {
+export function TokenAddressParamToJSON(value?: TokenAddressParam | null): any {
     if (value == null) {
         return value;
     }
@@ -141,13 +134,12 @@ export function AddressParamToJSON(value?: AddressParam | null): any {
         'hash': value['hash'],
         'implementation_name': value['implementationName'],
         'name': value['name'],
-        'ens_domain_name': value['ensDomainName'],
-        'metadata': value['metadata'],
         'is_contract': value['isContract'],
-        'private_tags': ((value['privateTags'] as Array<any>).map(AddressTagToJSON)),
-        'watchlist_names': ((value['watchlistNames'] as Array<any>).map(WatchlistNameToJSON)),
-        'public_tags': ((value['publicTags'] as Array<any>).map(AddressTagToJSON)),
         'is_verified': value['isVerified'],
+        'private_tags': ((value['privateTags'] as Array<any>).map(AddressTagToJSON)),
+        'public_tags': ((value['publicTags'] as Array<any>).map(AddressTagToJSON)),
+        'watchlist_names': ((value['watchlistNames'] as Array<any>).map(WatchlistNameToJSON)),
+        'address': value['address'],
     };
 }
 

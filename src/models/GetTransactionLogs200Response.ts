@@ -23,37 +23,37 @@ import {
 /**
  * 
  * @export
- * @interface GetLogs200Response
+ * @interface GetTransactionLogs200Response
  */
-export interface GetLogs200Response {
+export interface GetTransactionLogs200Response {
     /**
      * 
      * @type {Array<Log>}
-     * @memberof GetLogs200Response
+     * @memberof GetTransactionLogs200Response
      */
     items: Array<Log>;
     /**
      * 
      * @type {object}
-     * @memberof GetLogs200Response
+     * @memberof GetTransactionLogs200Response
      */
     nextPageParams: object;
 }
 
 /**
- * Check if a given object implements the GetLogs200Response interface.
+ * Check if a given object implements the GetTransactionLogs200Response interface.
  */
-export function instanceOfGetLogs200Response(value: object): boolean {
+export function instanceOfGetTransactionLogs200Response(value: object): boolean {
     if (!('items' in value)) return false;
     if (!('nextPageParams' in value)) return false;
     return true;
 }
 
-export function GetLogs200ResponseFromJSON(json: any): GetLogs200Response {
-    return GetLogs200ResponseFromJSONTyped(json, false);
+export function GetTransactionLogs200ResponseFromJSON(json: any): GetTransactionLogs200Response {
+    return GetTransactionLogs200ResponseFromJSONTyped(json, false);
 }
 
-export function GetLogs200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetLogs200Response {
+export function GetTransactionLogs200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetTransactionLogs200Response {
     if (json == null) {
         return json;
     }
@@ -64,7 +64,7 @@ export function GetLogs200ResponseFromJSONTyped(json: any, ignoreDiscriminator: 
     };
 }
 
-export function GetLogs200ResponseToJSON(value?: GetLogs200Response | null): any {
+export function GetTransactionLogs200ResponseToJSON(value?: GetTransactionLogs200Response | null): any {
     if (value == null) {
         return value;
     }

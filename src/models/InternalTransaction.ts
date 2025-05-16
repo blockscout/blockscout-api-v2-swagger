@@ -31,7 +31,7 @@ export interface InternalTransaction {
      * @type {number}
      * @memberof InternalTransaction
      */
-    block: number;
+    blockNumber: number;
     /**
      * 
      * @type {AddressParam}
@@ -104,7 +104,7 @@ export interface InternalTransaction {
  * Check if a given object implements the InternalTransaction interface.
  */
 export function instanceOfInternalTransaction(value: object): boolean {
-    if (!('block' in value)) return false;
+    if (!('blockNumber' in value)) return false;
     if (!('createdContract' in value)) return false;
     if (!('error' in value)) return false;
     if (!('from' in value)) return false;
@@ -129,7 +129,7 @@ export function InternalTransactionFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'block': json['block'],
+        'blockNumber': json['block_number'],
         'createdContract': AddressParamFromJSON(json['created_contract']),
         'error': json['error'],
         'from': AddressParamFromJSON(json['from']),
@@ -150,7 +150,7 @@ export function InternalTransactionToJSON(value?: InternalTransaction | null): a
     }
     return {
         
-        'block': value['block'],
+        'block_number': value['blockNumber'],
         'created_contract': AddressParamToJSON(value['createdContract']),
         'error': value['error'],
         'from': AddressParamToJSON(value['from']),

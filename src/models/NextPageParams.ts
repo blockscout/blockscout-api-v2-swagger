@@ -21,10 +21,10 @@ import { mapValues } from '../runtime';
 export interface NextPageParams {
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof NextPageParams
      */
-    blockNumber?: string;
+    blockNumber?: number;
     /**
      * 
      * @type {string}

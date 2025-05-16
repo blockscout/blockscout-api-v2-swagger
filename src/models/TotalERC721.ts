@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { NFTInstance } from './NFTInstance';
+import {
+    NFTInstanceFromJSON,
+    NFTInstanceFromJSONTyped,
+    NFTInstanceToJSON,
+} from './NFTInstance';
+
 /**
  * 
  * @export
@@ -25,6 +32,12 @@ export interface TotalERC721 {
      * @memberof TotalERC721
      */
     tokenId: string;
+    /**
+     * 
+     * @type {NFTInstance}
+     * @memberof TotalERC721
+     */
+    tokenInstance?: NFTInstance;
 }
 
 /**
@@ -46,6 +59,7 @@ export function TotalERC721FromJSONTyped(json: any, ignoreDiscriminator: boolean
     return {
         
         'tokenId': json['token_id'],
+        'tokenInstance': json['token_instance'] == null ? undefined : NFTInstanceFromJSON(json['token_instance']),
     };
 }
 
@@ -56,6 +70,7 @@ export function TotalERC721ToJSON(value?: TotalERC721 | null): any {
     return {
         
         'token_id': value['tokenId'],
+        'token_instance': NFTInstanceToJSON(value['tokenInstance']),
     };
 }
 

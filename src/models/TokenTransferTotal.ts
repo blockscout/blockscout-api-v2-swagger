@@ -19,13 +19,6 @@ import {
     TotalERC1155FromJSONTyped,
     TotalERC1155ToJSON,
 } from './TotalERC1155';
-import type { TotalERC1155Batch } from './TotalERC1155Batch';
-import {
-    instanceOfTotalERC1155Batch,
-    TotalERC1155BatchFromJSON,
-    TotalERC1155BatchFromJSONTyped,
-    TotalERC1155BatchToJSON,
-} from './TotalERC1155Batch';
 import type { TotalERC20 } from './TotalERC20';
 import {
     instanceOfTotalERC20,
@@ -46,7 +39,7 @@ import {
  * 
  * @export
  */
-export type TokenTransferTotal = TotalERC1155 | TotalERC1155Batch | TotalERC20 | TotalERC721;
+export type TokenTransferTotal = TotalERC1155 | TotalERC20 | TotalERC721;
 
 export function TokenTransferTotalFromJSON(json: any): TokenTransferTotal {
     return TokenTransferTotalFromJSONTyped(json, false);
@@ -56,7 +49,7 @@ export function TokenTransferTotalFromJSONTyped(json: any, ignoreDiscriminator: 
     if (json == null) {
         return json;
     }
-    return TotalERC1155FromJSONTyped(json, true) || TotalERC1155BatchFromJSONTyped(json, true) || TotalERC20FromJSONTyped(json, true) || TotalERC721FromJSONTyped(json, true);
+    return TotalERC1155FromJSONTyped(json, true) || TotalERC20FromJSONTyped(json, true) || TotalERC721FromJSONTyped(json, true);
 }
 
 export function TokenTransferTotalToJSON(value?: TokenTransferTotal | null): any {
@@ -66,9 +59,6 @@ export function TokenTransferTotalToJSON(value?: TokenTransferTotal | null): any
 
     if (instanceOfTotalERC1155(value)) {
         return TotalERC1155ToJSON(value as TotalERC1155);
-    }
-    if (instanceOfTotalERC1155Batch(value)) {
-        return TotalERC1155BatchToJSON(value as TotalERC1155Batch);
     }
     if (instanceOfTotalERC20(value)) {
         return TotalERC20ToJSON(value as TotalERC20);

@@ -157,13 +157,13 @@ export interface Block {
      * @type {number}
      * @memberof Block
      */
-    txCount: number;
+    transactionCount: number;
     /**
      * 
      * @type {string}
      * @memberof Block
      */
-    txFees: string;
+    transactionFees: string;
     /**
      * 
      * @type {string}
@@ -208,8 +208,8 @@ export function instanceOfBlock(value: object): boolean {
     if (!('stateRoot' in value)) return false;
     if (!('timestamp' in value)) return false;
     if (!('totalDifficulty' in value)) return false;
-    if (!('txCount' in value)) return false;
-    if (!('txFees' in value)) return false;
+    if (!('transactionCount' in value)) return false;
+    if (!('transactionFees' in value)) return false;
     if (!('type' in value)) return false;
     if (!('unclesHashes' in value)) return false;
     if (!('withdrawalsCount' in value)) return false;
@@ -246,8 +246,8 @@ export function BlockFromJSONTyped(json: any, ignoreDiscriminator: boolean): Blo
         'stateRoot': json['state_root'],
         'timestamp': json['timestamp'],
         'totalDifficulty': json['total_difficulty'],
-        'txCount': json['tx_count'],
-        'txFees': json['tx_fees'],
+        'transactionCount': json['transaction_count'],
+        'transactionFees': json['transaction_fees'],
         'type': json['type'],
         'unclesHashes': json['uncles_hashes'],
         'withdrawalsCount': json['withdrawals_count'],
@@ -280,8 +280,8 @@ export function BlockToJSON(value?: Block | null): any {
         'state_root': value['stateRoot'],
         'timestamp': value['timestamp'],
         'total_difficulty': value['totalDifficulty'],
-        'tx_count': value['txCount'],
-        'tx_fees': value['txFees'],
+        'transaction_count': value['transactionCount'],
+        'transaction_fees': value['transactionFees'],
         'type': value['type'],
         'uncles_hashes': value['unclesHashes'],
         'withdrawals_count': value['withdrawalsCount'],

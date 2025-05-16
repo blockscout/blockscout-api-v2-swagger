@@ -79,12 +79,6 @@ export interface SmartContract {
      * @type {boolean}
      * @memberof SmartContract
      */
-    isVyperContract?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SmartContract
-     */
     isSelfDestructed?: boolean;
     /**
      * 
@@ -206,6 +200,12 @@ export interface SmartContract {
      * @memberof SmartContract
      */
     language?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SmartContract
+     */
+    status?: string;
 }
 
 /**
@@ -232,7 +232,6 @@ export function SmartContractFromJSONTyped(json: any, ignoreDiscriminator: boole
         'isFullyVerified': json['is_fully_verified'] == null ? undefined : json['is_fully_verified'],
         'isVerifiedViaSourcify': json['is_verified_via_sourcify'] == null ? undefined : json['is_verified_via_sourcify'],
         'isVerifiedViaEthBytecodeDb': json['is_verified_via_eth_bytecode_db'] == null ? undefined : json['is_verified_via_eth_bytecode_db'],
-        'isVyperContract': json['is_vyper_contract'] == null ? undefined : json['is_vyper_contract'],
         'isSelfDestructed': json['is_self_destructed'] == null ? undefined : json['is_self_destructed'],
         'canBeVisualizedViaSol2uml': json['can_be_visualized_via_sol2uml'] == null ? undefined : json['can_be_visualized_via_sol2uml'],
         'minimalProxyAddressHash': json['minimal_proxy_address_hash'] == null ? undefined : json['minimal_proxy_address_hash'],
@@ -254,6 +253,7 @@ export function SmartContractFromJSONTyped(json: any, ignoreDiscriminator: boole
         'creationBytecode': json['creation_bytecode'] == null ? undefined : json['creation_bytecode'],
         'externalLibraries': json['external_libraries'] == null ? undefined : ((json['external_libraries'] as Array<any>).map(ExternalLibraryFromJSON)),
         'language': json['language'] == null ? undefined : json['language'],
+        'status': json['status'] == null ? undefined : json['status'],
     };
 }
 
@@ -270,7 +270,6 @@ export function SmartContractToJSON(value?: SmartContract | null): any {
         'is_fully_verified': value['isFullyVerified'],
         'is_verified_via_sourcify': value['isVerifiedViaSourcify'],
         'is_verified_via_eth_bytecode_db': value['isVerifiedViaEthBytecodeDb'],
-        'is_vyper_contract': value['isVyperContract'],
         'is_self_destructed': value['isSelfDestructed'],
         'can_be_visualized_via_sol2uml': value['canBeVisualizedViaSol2uml'],
         'minimal_proxy_address_hash': value['minimalProxyAddressHash'],
@@ -292,6 +291,7 @@ export function SmartContractToJSON(value?: SmartContract | null): any {
         'creation_bytecode': value['creationBytecode'],
         'external_libraries': value['externalLibraries'] == null ? undefined : ((value['externalLibraries'] as Array<any>).map(ExternalLibraryToJSON)),
         'language': value['language'],
+        'status': value['status'],
     };
 }
 

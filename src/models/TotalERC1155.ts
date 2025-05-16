@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { NFTInstance } from './NFTInstance';
+import {
+    NFTInstanceFromJSON,
+    NFTInstanceFromJSONTyped,
+    NFTInstanceToJSON,
+} from './NFTInstance';
+
 /**
  * 
  * @export
@@ -37,6 +44,12 @@ export interface TotalERC1155 {
      * @memberof TotalERC1155
      */
     value: string;
+    /**
+     * 
+     * @type {NFTInstance}
+     * @memberof TotalERC1155
+     */
+    tokenInstance?: NFTInstance;
 }
 
 /**
@@ -62,6 +75,7 @@ export function TotalERC1155FromJSONTyped(json: any, ignoreDiscriminator: boolea
         'tokenId': json['token_id'],
         'decimals': json['decimals'],
         'value': json['value'],
+        'tokenInstance': json['token_instance'] == null ? undefined : NFTInstanceFromJSON(json['token_instance']),
     };
 }
 
@@ -74,6 +88,7 @@ export function TotalERC1155ToJSON(value?: TotalERC1155 | null): any {
         'token_id': value['tokenId'],
         'decimals': value['decimals'],
         'value': value['value'],
+        'token_instance': NFTInstanceToJSON(value['tokenInstance']),
     };
 }
 
