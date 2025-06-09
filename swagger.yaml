@@ -3044,12 +3044,6 @@ components:
           type: boolean
         is_verified_via_eth_bytecode_db:
           type: boolean
-<<<<<<< Updated upstream
-        is_self_destructed:
-=======
-        is_vyper_contract:
->>>>>>> Stashed changes
-          type: boolean
         can_be_visualized_via_sol2uml:
           type: boolean
         minimal_proxy_address_hash:
