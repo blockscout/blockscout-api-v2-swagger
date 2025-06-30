@@ -2620,6 +2620,9 @@ components:
           type: boolean
         has_validated_blocks:
           type: boolean
+        creation_status:
+          type: string
+          example: "selfdestructed | failed | success"
 
     AddressWithTxCount:
       allOf:
@@ -3119,7 +3122,7 @@ components:
         language:
           type: string
           example: "solidity | vyper | yul"
-        status:
+        creation_status:
           type: string
           example: "selfdestructed | failed | success"
 
