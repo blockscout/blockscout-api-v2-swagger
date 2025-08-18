@@ -3,14 +3,10 @@ tags:
   - name: default
   - name: CelestiaService
 servers:
-  - url: https://eth.blockscout.com/api/v2/
-    description: Ethereum mainnet
-  - url: https://optimism.blockscout.com/api/v2/
-    description: Optimism mainnet
-  - url: https://base.blockscout.com/api/v2/
-    description: Base mainnet
-  - url: https://eth-sepolia.blockscout.com/api/v2/
-    description: Ethereum testnet  
+  - url: https://mstscan.com/api/v2/
+    description: MST mainnet
+  - url: https://testnet.mstscan.com/api/v2/
+    description: MST testnet  
 
 info:
   description: API for BlockScout web app
