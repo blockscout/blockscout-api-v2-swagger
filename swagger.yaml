@@ -6,7 +6,7 @@ servers:
   - url: http://{server}/api/v2/
     variables:
       server:
-        default: eth.blockscout.com
+        default: blockscout.com/poa/core
 
 info:
   description: API for BlockScout web app
