@@ -1712,7 +1712,15 @@ components:
         - total
         - transaction_hash
         - type
+        - token_type
       properties:
+        token_type:
+          type: string
+          enum:
+            - "ERC-20"
+            - "ERC-721"
+            - "ERC-1155"
+            - "ERC-404"
         block_hash:
           type: string
           example: "0xf569ec751152b2f814001fc730f7797aa155e4bc3ba9cb6ba24bc2c8c9468c1a"
