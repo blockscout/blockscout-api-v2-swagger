@@ -2030,6 +2030,7 @@ components:
         - revert_reason
         - confirmation_duration
         - transaction_tag
+        - operator_fee
       properties:
         timestamp:
           type: string
@@ -2141,6 +2142,9 @@ components:
         transaction_tag:
           type: string
           example: "private_transaction_tag"
+        operator_fee:
+          type: string
+          example: "9283742639"
 
     ExtendedRevertReasonAsMap:
       type: object
