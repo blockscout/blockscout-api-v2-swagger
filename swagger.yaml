@@ -2034,6 +2034,7 @@ components:
         - revert_reason
         - confirmation_duration
         - transaction_tag
+        - operator_fee
         - is_pending_update
       properties:
         timestamp:
@@ -2146,6 +2147,9 @@ components:
         transaction_tag:
           type: string
           example: "private_transaction_tag"
+        operator_fee:
+          type: string
+          example: "9283742639"
         is_pending_update:
           type: boolean
           nullable: true
