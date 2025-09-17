@@ -1703,7 +1703,6 @@ components:
         - total
         - transaction_hash
         - type
-        - reputation
       properties:
         block_hash:
           type: string
@@ -1734,8 +1733,6 @@ components:
         type:
           type: string
           example: "token_transfer"
-        reputation:
-          $ref: "#/components/schemas/Reputation"
 
     RawTrace:
       type: object
@@ -2695,7 +2692,6 @@ components:
         - value
         - token
         - token_id
-        - reputation
       properties:
         token_instance:
           $ref: "#/components/schemas/NFTInstance"
@@ -2707,8 +2703,6 @@ components:
           example: "123"
         token:
           $ref: "#/components/schemas/Token"
-        reputation:
-          $ref: "#/components/schemas/Reputation"
 
     CoinBalanceHistoryEntry:
       type: object
@@ -2902,7 +2896,6 @@ components:
         - id
         - token
         - owner
-        - reputation
       properties:
         is_unique:
           type: boolean
@@ -2952,8 +2945,6 @@ components:
         token_type:
           type: string
           example: "ERC-721"
-        reputation:
-          $ref: "#/components/schemas/Reputation"
         value:
           type: string
           example: "1"
@@ -3023,7 +3014,6 @@ components:
       required:
         - token
         - token_instances
-        - reputation
       properties:
         token:
           $ref: "#/components/schemas/TokenInfo"
@@ -3034,8 +3024,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AddressNFTInstanceCollection"
-        reputation:
-          $ref: "#/components/schemas/Reputation"
 
     SmartContract:
       properties:
@@ -3891,7 +3879,7 @@ components:
         status:
           $ref: '#/components/schemas/HealthCheckResponseServingStatus'
     Reputation:
-      description: Reputation of the token transfer
+      description: Reputation of the token or address
       enum:
         - ok
         - scam
