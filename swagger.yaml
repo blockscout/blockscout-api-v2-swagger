@@ -3048,6 +3048,8 @@ components:
         verified_twin_address_hash:
           type: string
           example: "0x394c399dbA25B99Ab7708EdB505d755B3aa29997"
+        is_blueprint:
+          type: boolean
         is_verified:
           type: boolean
         is_changed_bytecode:
@@ -3060,11 +3062,12 @@ components:
           type: boolean
         is_verified_via_eth_bytecode_db:
           type: boolean
+        is_verified_via_verifier_alliance:
+          type: boolean
         can_be_visualized_via_sol2uml:
           type: boolean
-        minimal_proxy_address_hash:
-          type: string
-          example: "0x394c399dbA25B99Ab7708EdB505d755B3aa29997"
+        certified:
+          type: boolean
         sourcify_repo_url:
           type: string
           example: "https://sourcify.repo.com/100/link_to_a_contract_at_sourcify"
@@ -3086,6 +3089,24 @@ components:
         verified_at:
           type: string
           example: "2021-06-02T17:54:17.116055Z"
+        license_type:
+          type: string
+          enum:
+            - none
+            - unlicense
+            - mit
+            - gnu_gpl_v2
+            - gnu_gpl_v3
+            - gnu_lgpl_v2_1
+            - gnu_lgpl_v3
+            - bsd_2_clause
+            - bsd_3_clause
+            - mpl_2_0
+            - osl_3_0
+            - apache_2_0
+            - gnu_agpl_v3
+            - bsl_1_1
+          default: none
         abi:
           type: string
           example: '[{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_bridgeDataAddress","internalType":"address"},{"type":"uint256","name":"_finalSupply","internalType":"uint256"},{"type":"uint256[5]","name":"_totalColorSupply","internalType":"uint256[5]"}]}]'
@@ -3136,6 +3157,23 @@ components:
         creation_status:
           type: string
           example: "selfdestructed | failed | success"
+        proxy_type:
+          $ref: "#/components/schemas/ProxyType"
+        implementations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Implementation"
+        conflicting_implementations:
+          type: array
+          items:
+            type: object
+            properties:
+              proxy_type:
+                $ref: "#/components/schemas/ProxyType"
+              implementations:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Implementation"
 
     ExternalLibrary:
       required:
@@ -3145,6 +3183,36 @@ components:
         name:
           type: string
           example: "MathLib"
+        address_hash:
+          type: string
+          example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
+
+    ProxyType:
+      type: string
+      enum:
+        - eip1167
+        - eip1967
+        - eip1822
+        - eip1967_oz
+        - eip1967_beacon
+        - master_copy
+        - basic_implementation
+        - basic_get_implementation
+        - comptroller
+        - eip2535
+        - clone_with_immutable_arguments
+        - eip7702
+        - resolved_delegate_proxy
+        - erc7760
+      nullable: true
+
+    Implementation:
+      required:
+        - address_hash
+      properties:
+        name:
+          type: string
+          example: "Implementation"
         address_hash:
           type: string
           example: "0xF61f5c4a3664501F499A9289AaEe76a709CE536e"
