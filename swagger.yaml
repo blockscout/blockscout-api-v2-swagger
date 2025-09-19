@@ -1622,6 +1622,7 @@ components:
         - type
         - uncles_hashes
         - withdrawals_count
+        - is_pending_update
       properties:
         base_fee_per_gas:
           type: string
@@ -1700,6 +1701,10 @@ components:
         withdrawals_count:
           type: integer
           example: 16
+        is_pending_update:
+          type: boolean
+          nullable: false
+          example: false
 
     TokenTransfer:
       type: object
@@ -2038,6 +2043,7 @@ components:
         - revert_reason
         - confirmation_duration
         - transaction_tag
+        - is_pending_update
       properties:
         timestamp:
           type: string
@@ -2149,6 +2155,10 @@ components:
         transaction_tag:
           type: string
           example: "private_transaction_tag"
+        is_pending_update:
+          type: boolean
+          nullable: true
+          example: false
 
     ExtendedRevertReasonAsMap:
       type: object
