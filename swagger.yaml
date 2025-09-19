@@ -374,6 +374,7 @@ paths:
 
         "400":
           description: bad input parameter
+
   /transactions/{transaction_hash}/internal-transactions:
     get:
       summary: get transaction internal transactions
@@ -407,6 +408,7 @@ paths:
 
         "400":
           description: bad input parameter
+  
   /transactions/{transaction_hash}/logs:
     get:
       summary: get transaction logs
@@ -434,6 +436,7 @@ paths:
                       { "index": 0, "items_count": 50, "block_number": 2 }
         "400":
           description: bad input parameter
+  
   /transactions/{transaction_hash}/raw-trace:
     get:
       summary: get transaction raw trace
@@ -451,6 +454,7 @@ paths:
                   $ref: "#/components/schemas/RawTrace"
         "400":
           description: bad input parameter
+ 
   /transactions/{transaction_hash}/state-changes:
     get:
       summary: get transaction state changes
@@ -622,6 +626,7 @@ paths:
                 $ref: "#/components/schemas/Address"
         "400":
           description: bad input parameter
+  
   /addresses/{address_hash}/counters:
     get:
       summary: get address counters
@@ -870,6 +875,7 @@ paths:
                       }
         "400":
           description: bad input parameter
+  
   /addresses/{address_hash}/coin-balance-history:
     get:
       summary: get address coin balance history
@@ -1401,24 +1407,6 @@ paths:
         "400":
           description: bad input parameter
 
-  /config/json-rpc-url:
-    get:
-      summary: get json rpc url
-      operationId: get_json_rpc_url
-      responses:
-        "200":
-          description: json rpc url
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - json_rpc_url
-                properties:
-                  json_rpc_url:
-                    type: string
-                    example: "https://core.poa.network"
-
   /withdrawals:
     get:
       summary: get withdrawals
@@ -1455,6 +1443,7 @@ paths:
                 $ref: "#/components/schemas/v1IndexerStatus"
         "500":
           description: unexpected error
+  
   /api/v1/celestia/blob:
     get:
       operationId: CelestiaService_GetBlob
@@ -1490,6 +1479,7 @@ paths:
             type: boolean
       tags:
         - CelestiaService
+  
   /api/v1/celestia/l2BatchMetadata:
     get:
       operationId: CelestiaService_GetL2BatchMetadata
@@ -1525,6 +1515,7 @@ paths:
             type: string
       tags:
         - CelestiaService
+ 
   /health:
     get:
       summary: |-
@@ -2508,6 +2499,7 @@ components:
         - private_tags
         - public_tags
         - watchlist_names
+        - reputation
       properties:
         hash:
           type: string
@@ -2546,6 +2538,8 @@ components:
             $ref: "#/components/schemas/AddressTag"
         is_verified:
           type: boolean
+        reputation:
+          $ref: "#/components/schemas/Reputation"
 
     AddressTag:
       type: object
@@ -2580,6 +2574,7 @@ components:
       type: object
       required:
         - hash
+        - reputation
       properties:
         creator_address_hash:
           type: string
@@ -2639,6 +2634,8 @@ components:
         creation_status:
           type: string
           example: "selfdestructed | failed | success"
+        reputation:
+          $ref: "#/components/schemas/Reputation"
 
     AddressWithTxCount:
       allOf:
@@ -3189,6 +3186,7 @@ components:
         - holders
         - exchange_rate
         - total_supply
+        - reputation
       properties:
         circulating_market_cap:
           type: string
@@ -3220,7 +3218,8 @@ components:
         total_supply:
           type: string
           example: "10000000"
-
+        reputation:
+          $ref: "#/components/schemas/Reputation"
     Argument:
       properties:
         name:
@@ -3260,6 +3259,7 @@ components:
         - token_url
         - total_supply
         - type
+        - reputation
       properties:
         address_hash:
           type: string
@@ -3294,6 +3294,8 @@ components:
         type:
           type: string
           example: "token" # always is token
+        reputation:
+          $ref: "#/components/schemas/Reputation"
 
     SearchResultAddressOrContract:
       required:
@@ -3302,6 +3304,7 @@ components:
         - name
         - type
         - url
+        - reputation
       properties:
         address_hash:
           type: string
@@ -3318,6 +3321,8 @@ components:
         url:
           type: string
           example: "/xdai/mainnet/address/0xc1c1031e4A44B98707203480029e6576CB3267e3"
+        reputation:
+          $ref: "#/components/schemas/Reputation"
 
     SearchResultBlock:
       required:
@@ -3604,6 +3609,7 @@ components:
         - language
         - optimization_enabled
         - verified_at
+        - reputation
       properties:
         address_hash:
           $ref: "#/components/schemas/AddressParam"
@@ -3628,7 +3634,8 @@ components:
         market_cap:
           type: number
           example: 1000000000.0001
-
+        reputation:
+          $ref: "#/components/schemas/Reputation"
     Withdrawal:
       required:
         - index
@@ -3889,7 +3896,14 @@ components:
       properties:
         status:
           $ref: '#/components/schemas/HealthCheckResponseServingStatus'
-
+    Reputation:
+      description: Reputation of the token or address
+      enum:
+        - ok
+        - scam
+      nullable: true
+      type: string
+  
   examples:
     TokenTransferLarge1155Batch:
       value:
