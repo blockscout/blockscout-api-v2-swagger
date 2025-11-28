@@ -1,3 +1,16 @@
+# 📦 Repository Archived
+
+This repository has been moved to **archival state**.  
+Active development no longer takes place here.
+
+## 🔄 Updated OpenAPI Specifications
+
+For the latest and actively maintained **OpenAPI specifications for Blockscout API endpoints**, please visit:
+
+👉 https://github.com/blockscout/swaggers/tree/master/blockscout
+
+Thank you for your interest and contributions!
+
 # Blockscout API v2 Swagger
 
 This repository contains the Swagger configuration for the [Blockscout](https://github.com/blockscout/blockscout) API v2.
